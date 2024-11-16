@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from dbhelper import *
 from flask_session import Session
 import os
@@ -7,10 +7,11 @@ import os
 app = Flask(__name__)
 app.config
 
+
 app.config["SESSION_TYPE"] = "filesystem"
-app.config['SESSION_PERMANENT'] = False
+app.config["SESSION_FILE_DIR"] = "/tmp/sessions" 
+app.config["SESSION_COOKIE_NAME"] = "session_cookie" 
 app.config['SECRET_KEY'] = 'Kimperor123'
-Session(app)
 
 def userlogin(username: str, password: str) -> bool:
     sql = "SELECT * FROM users WHERE username = ? AND password = ?"
