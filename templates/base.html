@@ -6,13 +6,16 @@
 		<meta http-equiv="X-UA-compatible" content='ie-edge'>
 		<link rel='stylesheet' href="../static/css/w3.css">
 		<link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+		<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.min.css') }}">
+		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 		<title>Registration</title>
 
 	</head>
 	<body>
+		
 	    <div class='w3-container w3-padding-16'>
 	        {% block content %}
+				
 	        {% endblock %}
 	    </div>
 	    <hr>

@@ -3,7 +3,6 @@ from dbhelper import *
 from flask_session import Session
 import os
 
-
 app = Flask(__name__)
 app.config
 
@@ -55,8 +54,6 @@ def student_list():
         flash("Please log in first!", "warning")
         return redirect(url_for('login'))
 
-
-
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -94,13 +91,13 @@ def register():
 
     if not idno.isdigit():
         flash("ID Number must contain only digits!", 'error')
-        return redirect(url_for('student_list'))  # Change this line
+        return redirect(url_for('student_list'))
 
     existing_user = get_user(idno)
     
     if existing_user and flag == '0':  
         flash(f"User ID '{idno}' already exists!", 'warning')
-        return redirect(url_for('student_list'))  # Change this line
+        return redirect(url_for('student_list')) 
 
     imagename = ''
     if file.filename != '':
@@ -138,7 +135,9 @@ def register():
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
     idno: str = request.form['idno']
+    print(f"Deleting user with ID: {idno}")  # Debugging line
     imagename: str = get_user(idno)[0]['image']
+    print(f"Image path: {imagename}")  # Debugging line
     ok: bool = delete_record('students', idno=idno)
     
     if ok:
@@ -151,11 +150,13 @@ def delete_user():
     try:
         if os.path.exists(imagename):
             os.remove(imagename)
+            print(f"Deleted image: {imagename}")  # Debugging line
     except Exception as e:
-        flash(f"Error within '/delete_user': File path error", 'error')  # Red for file errors
+        flash(f"Error within '/delete_user': File path error", 'error')
         print(e)
     
-    return redirect('index')
+    return redirect(url_for('student_list'))
+
 
 
 @app.after_request

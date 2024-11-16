@@ -1,8 +1,12 @@
 <div class='w3-container w3-blue title'>
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
-    <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom">LOG-OUT</a>
-    <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" onclick="openAddStudentModal()">Add Student</a>
+    <i class='bx bx-menu w3-right w3-margin-top w3-margin-bottom' id="menu-icon"></i> 
+    <nav class="navbar">
+        <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom">LOG-OUT</a>
+        <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" onclick="openAddStudentModal()">Add Student</a>
+    </nav>
 </div>
+
 {% extends 'base.html' %}
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -70,8 +74,8 @@
     </div>
 </div>
 
-<div class="custom-modal" id="addStudentModal">
-    <div class="custom-modal-content w3-card-4 w3-round-xlarge" style="width: 50%; margin: auto;">
+<div class="custom-modal" id="addStudentModal" style="display: none;">
+    <div class="custom-modal-content w3-card-4 w3-round-xlarge">
         <form method="post" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
             <div id="close-login-btn" class="fas fa-times"></div>
             <p class="w3-center w3-padding">
@@ -124,6 +128,15 @@
     
 
 <script language="JavaScript">
+
+        let menuIcon = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
+
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        };
+    
         console.log(document.getElementById('flag').value);
         const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
         document.getElementById('image').src = default_img_src;
@@ -133,9 +146,11 @@
         document.getElementById('deleteIdNo').value = idno;
         document.getElementById('customAlert').style.display = 'flex'; 
         }
+
         function closeAlert() {
         document.getElementById('customAlert').style.display = 'none';
         }
+
         function readURI(input) {
             if(input.files && input.files[0]){
                 reader = new FileReader();
@@ -167,6 +182,7 @@
             document.getElementById('flag').value = 0;
             console.log(document.getElementById('flag').value);
         }
+        
         window.addEventListener('DOMContentLoaded', (event) => {
             const flashMessages = document.querySelectorAll('.flash-message');
             
@@ -180,6 +196,7 @@
                 });
             });
         });
+
         function substringer(str, phrase) {
             const index = str.indexOf(phrase);
             str = (index !== -1) ? str.slice(index) : ''; 
@@ -219,26 +236,18 @@
 }
 
 function openAddStudentModal() {
-    const modal = document.getElementById('addStudentModal');
-    modal.style.display = 'flex';
-    setTimeout(() => { modal.style.right = '0'; }, 10);  
+    document.getElementById('addStudentModal').style.display = 'flex';
 }
 
 window.onclick = function(event) {
     if (event.target == document.getElementById('addStudentModal')) {
-        document.getElementById('addStudentModal').style.right = '-105%'; 
-        setTimeout(() => { document.getElementById('addStudentModal').style.display = 'none'; }, 300); 
+        document.getElementById('addStudentModal').style.display = 'none';
     }
 }
 
 document.getElementById('close-login-btn').addEventListener('click', function() {
-    const modal = document.getElementById('addStudentModal');
-    
-    modal.style.right = '-105%';
-    
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 300); 
+    document.getElementById('addStudentModal').style.display = 'none';
 });
+
     </script>
 {% endblock %}

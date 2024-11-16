@@ -270,18 +270,19 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 }
 
 .flash-message {
-    width: 430px;
+    max-width: 350px;
     position: fixed;
-    bottom: 1rem;
-    left: calc(50% - 150px);
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+    margin: auto;
     transition: opacity 0.4s ease-in, transform 0.4s ease-in;
-    margin-bottom: 3rem;
-    display: inline-flex; 
-    align-items: center;  
-    gap: 10px; 
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    text-align: center; 
 }
+
 
 .flash-message i {
     font-size: 1.2em;
@@ -294,43 +295,39 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 
 .flash-message.success {
     background-color: #bcf3be;
-    border-left: 8px solid #388E3C; 
-    border-radius: 5px;
+    border-left: 0.4rem solid #388E3C; 
+    border-radius: 0.4rem;
     color: #388E3C; 
 }
 
 
 .flash-message.warning {
     background-color: #f6deb4;
-    border-radius: 4px;
-    border-left: 8px solid #ffa502;
+    border-radius: 0.4rem;
+    border-left: 0.4rem solid #ffa502;
     color: #dc8f00;
-    text-align: center;
 }
 
 .flash-message.error {
     background-color: #f5c4c4; 
-    border-radius: 4px;
     color: #ef3636;
-    text-align: center;
-    border-left: 8px solid #ea4848; 
+    border-radius: 0.4rem;
+    border-left: 0.4rem solid #ea4848; 
 }
 
 
 .flash-message.delete-success {
     background-color: #f5c4c4; 
-    border-radius: 4px;
+    border-radius: 0.4rem;
     color: #ef3636;
-    text-align: center;
-    border-left: 8px solid #ea4848; 
+    border-left: 0.4rem solid #ea4848; 
 }
 
 .flash-message.info {
     background-color: #c5daf2;  
-    border-radius: 4px;
-    border-left: 8px solid #2b7cc4; 
-    color: #086dc5;  
-    text-align: center;
+    border-radius: 0.4rem;
+    border-left: 0.4rem #2b7cc4; 
+    color: #086dc5; 
 }
 
 
@@ -356,11 +353,10 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     background: rgba(0, 0, 0, 0.4); 
     position: fixed;
     top: 0;
-    right: -105%;
+    right: 0;
     z-index: 10000;
     height: 100%;
     width: 100%;
-    transition: right 0.3s ease-in-out;
 }
 
 .custom-modal-content {
@@ -368,11 +364,10 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;  
+    width: 35%;  
     max-width: 650px;
     position: relative; 
 }
-
 
 .custom-modal-content .w3-closebtn {
     position: absolute;
@@ -389,6 +384,14 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     text-decoration: none;
     cursor: pointer;
 }
+
+
+#menu-icon {
+    font-size: 3rem;
+    color: #3a3a3a;
+    display: none;  /* Hidden by default */
+}
+
 #close-login-btn {
     position: absolute;
     top: 15px; 
@@ -396,31 +399,58 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
     font-size: 24px; 
     cursor: pointer; 
 }
+.w3-table-all th {
+    background-color: #2196F3; 
+    color: #ffffff; 
+}
+
+@media (max-width: 934px)
+{
+    .custom-modal-content {
+        width: 50%; 
+    }
+}
+
 
 @media (max-width: 710px) {
-    .flash-message
-    {
-        margin-bottom: -2.5rem;
-        margin-top: 1rem;
-        width: 100%;
-        left:0;
-        position: relative;
-    }
-    @keyframes fadeSlideOut {
-        0% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-    }
-
     .w3-third {
         margin-top: 2rem;
     }
+    .flash-message {
+        max-width: 90%;
+        bottom: 0.5rem; 
+        font-size: 0.9em; 
+        margin-bottom: 1rem; 
+    }
+    .flash-message i {
+        font-size: 1em;
+    }
 
+
+    .w3-padding {
+        padding: 8px;
+    }
+
+    .w3-row-padding {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    #image {
+        width: 50%;
+    }
+    .custom-modal-content {
+        width: 55%; 
+    }
+
+    .custom-modal-content .w3-closebtn {
+        font-size: 30px;
+        top: 10px;
+        right: 15px;
+    }
+}
+@media (max-width: 622px)
+{
     .w3-table-all {
         display: block;
         overflow-x: auto;
@@ -428,6 +458,10 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
         margin-top: 2rem;
         background-color: #2196F3; 
     }
+}
+
+@media (max-width: 566px)
+{
     .w3-table-all::-webkit-scrollbar {
         height: 5px;
     }
@@ -446,45 +480,49 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
         color: #ffffff; 
     }
 
-    .edit-btn::before {
-        content: "\270E"; 
-    }
-
-    .delete-btn::before {
-        content: "\00D7"; 
-    }
-
-    .edit-btn, .delete-btn {
-        color: transparent;
-    }
-
     .w3-table-all th, .w3-table-all td {
         padding: 8px 12px;
         font-size: 12px;
     }
-
-    .w3-padding {
-        padding: 8px;
-    }
-
-    .w3-row-padding {
-        display: flex;
-        flex-direction: column-reverse;
-    }
-
-    #image {
-        width: 50%;
-    }
-    /* Modal width adjustment for smaller screens */
     .custom-modal-content {
-        width: 90%; /* Take up 90% of the screen width */
-        max-width: 500px; /* Max width to ensure it doesn't become too large */
-    }
-
-    /* Adjust the close button position for smaller screens */
-    .custom-modal-content .w3-closebtn {
-        font-size: 30px;
-        top: 10px;
-        right: 15px;
+        width: 70%; 
     }
 }
+
+/* Mobile Navbar (under 445px width) */
+@media (max-width: 445px) {
+    #menu-icon {
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem 3%;
+        background: var(--bg-color);
+        border-top: 0.1rem solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 10;  /* Ensure the navbar appears above other elements */
+    }
+
+    .navbar.active {
+        display: block; 
+    }
+
+    .navbar a {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+        text-align: left; 
+    }
+
+    .w3-button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
