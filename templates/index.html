@@ -1,0 +1,244 @@
+<div class='w3-container w3-blue title'>
+    <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
+    <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom">LOG-OUT</a>
+    <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" onclick="openAddStudentModal()">Add Student</a>
+</div>
+{% extends 'base.html' %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="w3-container flash-message 
+        {% if category == 'success' %}
+            success
+        {% elif category == 'error' %}
+            error
+        {% elif category == 'info' %}
+            info
+        {% elif category == 'delete-success' %}
+            delete-success
+        {% else %}
+            warning
+        {% endif %}
+        ">
+            {% if category == 'success' %}
+                <i class="fa fa-check-circle"></i>
+            {% elif category == 'error' %}
+                <i class="fa fa-times-circle"></i>
+            {% elif category == 'warning' %}
+                <i class="fa fa-exclamation-circle"></i>
+            {% elif category == 'delete-success' %}
+                <i class="fa fa-check-circle"></i>
+            {% elif category == 'info' %}
+                <i class="fa fa-info-circle"></i>
+            {% endif %}
+            <p>{{ message }}</p>
+        </div>
+        
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class='w3-row-padding' id='main_container'>
+    <div class='w3-full'>
+        <table class="w3-table-all" id='table'>
+            <tr id='tr1'>
+                <th>IDNO</th>
+                <th>LASTNAME</th>
+                <th>FIRSTNAME</th>
+                <th>COURSE</th>
+                <th>LEVEL</th>
+                <th>Action</th>
+            </tr>
+            {% for user in users %}
+            <tr id='tr2'>
+                <td>{{ user["idno"] }}</td>
+                <td>{{ user["lastname"] }}</td>
+                <td>{{ user["firstname"] }}</td>
+                <td>{{ user["course"] }}</td>
+                <td>{{ user["level"] }}</td>
+                <td>
+                    <button class="w3-button w3-red delete-btn" onclick="openCustomAlert('{{ user['idno'] }}')">
+                        <i class="fas fa-times"></i> <!-- Only the X icon will be shown -->
+                    </button>
+                                  
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class='w3-container w3-margin' id='empty_table_msg' style='display: none;'>Nothing follows...</div>
+    </div>
+</div>
+
+<div class="custom-modal" id="addStudentModal">
+    <div class="custom-modal-content w3-card-4 w3-round-xlarge" style="width: 50%; margin: auto;">
+        <form method="post" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
+            <div id="close-login-btn" class="fas fa-times"></div>
+            <p class="w3-center w3-padding">
+                <label for="uploadimage">
+                    <img id="image" class="image">
+                    <input type="file" id="uploadimage" name="uploadimage" style="display:none;" onchange="readURI(this)">
+                </label>
+            </p>
+            <p>
+                <label><b>IDNO</b></label>
+                <input type="text" id="idno" name="idno" class="w3-input">
+            </p>
+            <p>
+                <label><b>LASTNAME</b></label>
+                <input type="text" id="lastname" name="lastname" class="w3-input">
+            </p>
+            <p>
+                <label><b>FIRSTNAME</b></label>
+                <input type="text" id="firstname" name="firstname" class="w3-input">
+            </p>
+            <p>
+                <label><b>COURSE</b></label>
+                <input type="text" id="course" name="course" class="w3-input">
+            </p>
+            <p>
+                <label><b>LEVEL</b></label>
+                <input type="text" id="level" name="level" class="w3-input">
+            </p>
+            <input type="hidden" value="0" id="flag" name="flag">
+            <p>
+                <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
+                <button type="reset" class="w3-button w3-red w3-margin-top" onclick="cancel_record()">CANCEL</button>
+            </p>
+        </form>
+    </div>
+</div>
+
+    <div id="customAlert" style="display: none;">
+        <div class="alert-content">
+            <h3>Are you sure you want to delete this student?</h3>
+            <div class="alert-buttons">
+                <form method="post" action="/delete_user" id="deleteForm">
+                    <input type="hidden" id="deleteIdNo" name="idno">
+                    <button type="submit" class="confirm-btn w3-red w3-button">Confirm</button>
+                </form>
+                <button class="cancel-btn w3-blue w3-button" onclick="closeAlert()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+
+<script language="JavaScript">
+        console.log(document.getElementById('flag').value);
+        const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
+        document.getElementById('image').src = default_img_src;
+        defaultMsgIfTableEmpty();
+
+        function openCustomAlert(idno) {
+        document.getElementById('deleteIdNo').value = idno;
+        document.getElementById('customAlert').style.display = 'flex'; 
+        }
+        function closeAlert() {
+        document.getElementById('customAlert').style.display = 'none';
+        }
+        function readURI(input) {
+            if(input.files && input.files[0]){
+                reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function view_record(image, idno, lastname, firstname, course, level) {
+            document.getElementById('image').src = image;
+            document.getElementById('idno').value = idno;
+            document.getElementById('idno').readOnly = true;
+            document.getElementById('lastname').value = lastname;
+            document.getElementById('firstname').value = firstname;
+            document.getElementById('course').value = course;
+            document.getElementById('level').value = level;
+            document.getElementById('flag').value = 1;
+            console.log(document.getElementById('flag').value);
+        }
+        function cancel_record() {
+            document.getElementById('image').src = default_img_src;
+            document.getElementById('idno').value = '';
+            document.getElementById('idno').readOnly = false;
+            document.getElementById('lastname').value = '';
+            document.getElementById('firstname').value = '';
+            document.getElementById('course').value = '';
+            document.getElementById('level').value = '';
+            document.getElementById('flag').value = 0;
+            console.log(document.getElementById('flag').value);
+        }
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            
+            flashMessages.forEach((flashMessage) => {
+                setTimeout(() => {
+                    flashMessage.classList.add('fade-out');
+                }, 2500);
+
+                flashMessage.addEventListener('animationend', () => {
+                    flashMessage.remove();
+                });
+            });
+        });
+        function substringer(str, phrase) {
+            const index = str.indexOf(phrase);
+            str = (index !== -1) ? str.slice(index) : ''; 
+            return str;
+        }
+
+        function defaultMsgIfTableEmpty() {
+            if (document.querySelectorAll('#table tbody #tr2').length == 0) {
+                console.log('table is empty');
+                document.getElementById('empty_table_msg').style = 'display: block;';
+            } else {
+                console.log('table is not empty!!');
+            }
+        }
+
+    function checkIfFieldsExists() {
+    const idno = document.getElementById('idno').value.trim();
+    const lastname = document.getElementById('lastname').value.trim();
+    const firstname = document.getElementById('firstname').value.trim();
+    const course = document.getElementById('course').value.trim();
+    const level = document.getElementById('level').value.trim();
+    const img = substringer(document.getElementById('image').src, "/static/img/");
+    
+    if (!idno || !lastname || !firstname || !course || !level) {
+        alert("Please fill in all fields.");
+        return false;
+    }
+
+    if (img == default_img_src) {
+        alert("Please insert an image.");
+        return false;
+    }
+
+    console.log(img);
+    console.log(default_img_src);
+    return true;
+}
+
+function openAddStudentModal() {
+    const modal = document.getElementById('addStudentModal');
+    modal.style.display = 'flex';
+    setTimeout(() => { modal.style.right = '0'; }, 10);  
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('addStudentModal')) {
+        document.getElementById('addStudentModal').style.right = '-105%'; 
+        setTimeout(() => { document.getElementById('addStudentModal').style.display = 'none'; }, 300); 
+    }
+}
+
+document.getElementById('close-login-btn').addEventListener('click', function() {
+    const modal = document.getElementById('addStudentModal');
+    
+    modal.style.right = '-105%';
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300); 
+});
+    </script>
+{% endblock %}

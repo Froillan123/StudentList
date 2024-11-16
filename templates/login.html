@@ -1,0 +1,79 @@
+<div class='w3-container w3-blue w3-margin-bottom'>
+    <h3 class="w3-center w3-margin-left">{{pagetitle}}</h3>
+</div>
+
+{% extends 'base.html' %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="w3-container flash-message 
+        {% if category == 'success' %} success
+        {% elif category == 'error' %} error
+        {% elif category == 'info' %} info
+        {% elif category == 'delete-success' %} delete-success
+        {% else %} warning {% endif %}">
+          {% if category == 'success' %}
+              <i class="fa fa-check-circle"></i>
+          {% elif category == 'error' %}
+              <i class="fa fa-times-circle"></i>
+          {% elif category == 'warning' %}
+              <i class="fa fa-exclamation-circle"></i>
+          {% elif category == 'delete-success' %}
+              <i class="fa fa-check-circle"></i>
+          {% elif category == 'info' %}
+              <i class="fa fa-info-circle"></i>
+          {% endif %}
+          <p>{{ message }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="w3-card-4 w3-animate-top w3-container w3-padding card-container">
+    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+        <p>
+            <label>USERNAME</label>
+            <input type="text" name="username" id="username" class="w3-input w3-border">
+        </p>
+        <p>
+            <label>PASSWORD</label>
+            <input type="password" name="password" id="password" class="w3-input w3-border">
+        </p>
+        <p>
+            <input type="submit" value="Login" class="w3-button w3-blue w3-border-red">
+        </p>
+    </form>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const flashMessages = document.querySelectorAll('.flash-message');
+
+        flashMessages.forEach((flashMessage) => {
+            setTimeout(() => {
+                flashMessage.classList.add('fade-out'); 
+            }, 2500);  
+
+            flashMessage.addEventListener('animationend', () => {
+                flashMessage.remove();  
+            });
+        });
+    });
+</script>
+
+<style>
+ 
+    .card-container {
+        width: 50%;
+        margin: auto;
+    }
+
+    @media (max-width: 574px) {
+        .card-container {
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock %}
