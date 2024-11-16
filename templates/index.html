@@ -1,11 +1,12 @@
-<div class='w3-container w3-blue title'>
+<div class='w3-container w3-blue w3-margin-bottom'>
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
     <i class='bx bx-menu w3-right w3-margin-top w3-margin-bottom' id="menu-icon"></i> 
     <nav class="navbar">
-        <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom">LOG-OUT</a>
-        <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" onclick="openAddStudentModal()">Add Student</a>
+        <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom" id="logout">LOG-OUT</a>
+        <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" id="add" onclick="openAddStudentModal()">Add Student</a>
     </nav>
 </div>
+
 
 {% extends 'base.html' %}
 {% block content %}
@@ -129,13 +130,49 @@
 
 <script language="JavaScript">
 
-        let menuIcon = document.querySelector('#menu-icon');
-        let navbar = document.querySelector('.navbar');
+let menuIcon = document.querySelector('#menu-icon');
+let navbar = document.querySelector('.navbar');
+let navbarLinks = document.querySelectorAll('.navbar a');
+let logoutBtn = document.getElementById('logout');  // Target the LOG-OUT button
+let addBtn = document.getElementById('add');  // Target the Add Student button
 
-        menuIcon.onclick = () => {
-            menuIcon.classList.toggle('bx-x');
-            navbar.classList.toggle('active');
-        };
+// Toggle the navbar when the menu icon is clicked
+menuIcon.onclick = () => {
+    menuIcon.classList.toggle('bx-x');
+    navbar.classList.toggle('active');
+};
+
+// Function to adjust styles based on screen width
+function adjustNavbarStyles() {
+    if (window.innerWidth <= 445) {
+        // Remove specific styles for small screens (445px or less)
+        navbarLinks.forEach(link => {
+            // Remove W3-specific styles for all navbar links
+            link.classList.remove('w3-button', 'w3-red', 'w3-right', 'w3-margin-top', 'w3-margin-bottom', 'w3-white', 'w3-margin-right');
+        });
+        // Ensure the logout button has the correct styles for small screens
+        logoutBtn.classList.remove('w3-red');
+        addBtn.classList.remove('w3-white'); // Optional: You can manage styles for Add Student here as well
+    } else {
+        // Apply styles when screen width > 445px
+        logoutBtn.classList.add('w3-red');
+        logoutBtn.classList.remove('w3-white');  // Ensure the logout button remains red
+
+        addBtn.classList.add('w3-white'); // Keep "Add Student" white
+
+        // Reset styles for other navbar links
+        navbarLinks.forEach(link => {
+            link.classList.add('w3-button', 'w3-right', 'w3-margin-top', 'w3-margin-bottom', 'w3-margin-right');
+        });
+    }
+}
+
+// Call adjustNavbarStyles when the page is loaded or resized
+window.addEventListener('load', adjustNavbarStyles);
+window.addEventListener('resize', adjustNavbarStyles);
+
+
+
     
         console.log(document.getElementById('flag').value);
         const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
