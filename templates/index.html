@@ -2,10 +2,15 @@
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
     <i class="fa fa-bars w3-right w3-margin-top w3-margin-bottom" id="menu-icon"></i> 
     <nav class="navbar">
-        <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom" id="logout">LOG-OUT</a>
-        <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" id="add" onclick="openAddStudentModal()">Add Student</a>
+        <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom" id="logout">
+            <i class="fa fa-sign-out-alt"></i> LOG-OUT
+        </a>
+        <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" id="add" onclick="openAddStudentModal()">
+            <i class="fa fa-plus"></i> Add Student
+        </a>
     </nav>
 </div>
+
 
 
 
@@ -61,16 +66,16 @@
             <tbody>
                 {% for user in users %}
                 <tr id="tr2">
-                    <td class="w3-center" data-cell="IDNO">
+                    <td class="w3-center" data-cell="IDNO:">
                         <a href="#" onclick="viewrecordstudents('{{ user['image'] }}', '{{ user['idno'] }}', '{{ user['lastname'] }}', '{{ user['firstname'] }}', '{{ user['course'] }}', '{{ user['level'] }}')">
                             {{ user["idno"] }}
                         </a>
                     </td>
-                    <td class="w3-center" data-cell="LASTNAME">{{ user["lastname"] }}</td>
-                    <td class="w3-center" data-cell="FIRSTNAME">{{ user["firstname"] }}</td>
-                    <td class="w3-center" data-cell="COURSE">{{ user["course"] }}</td>
-                    <td class="w3-center" data-cell="LEVEL">{{ user["level"] }}</td>
-                    <td class="w3-center" data-cell="ACTION">
+                    <td class="w3-center" data-cell="LASTNAME:">{{ user["lastname"] }}</td>
+                    <td class="w3-center" data-cell="FIRSTNAME:">{{ user["firstname"] }}</td>
+                    <td class="w3-center" data-cell="COURSE:">{{ user["course"] }}</td>
+                    <td class="w3-center" data-cell="LEVEL:">{{ user["level"] }}</td>
+                    <td class="w3-center" data-cell="ACTION:">
                         <button class="w3-button w3-red delete-btn" onclick="openCustomAlert('{{ user['idno'] }}')">
                             <i class="fas fa-times"></i> <!-- Only the X icon will be shown -->
                         </button>
@@ -85,7 +90,7 @@
 
 <div class="custom-modal" id="addStudentModal" style="display: none;">
     <div class="custom-modal-content w3-card-4">
-        <form method="post" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
+        <form method="post" id="reg" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
             <div id="close-login-btn" class="fas fa-times"></div>
             <p class="w3-center w3-padding">
                 <label for="uploadimage">
@@ -93,27 +98,27 @@
                     <input type="file" id="uploadimage" name="uploadimage" style="display:none;" onchange="readURI(this)">
                 </label>
             </p>
-            <p>
+            <p class="fields">
                 <label><b>IDNO</b></label>
                 <input type="text" id="idno" name="idno" class="w3-input" maxlength="10" oninput="updateCount(this, 'idno-count', 10)">
                 <div id="idno-count" class="char-count">0/10</div>
             </p>
-            <p>
+            <p class="fields">
                 <label><b>LASTNAME</b></label>
-                <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="25" oninput="updateCount(this, 'lastname-count', 25)">
-                <div id="lastname-count" class="char-count">0/25</div>
+                <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="50" oninput="updateCount(this, 'lastname-count', 50)">
+                <div id="lastname-count" class="char-count">0/50</div>
             </p>
-            <p>
+            <p class="fields">
                 <label><b>FIRSTNAME</b></label>
-                <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="25" oninput="updateCount(this, 'firstname-count', 25)">
-                <div id="firstname-count" class="char-count">0/25</div>
+                <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="50" oninput="updateCount(this, 'firstname-count', 50)">
+                <div id="firstname-count" class="char-count">0/50</div>
             </p>
-            <p>
+            <p class="fields">
                 <label><b>COURSE</b></label>
                 <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)">
                 <div id="course-count" class="char-count">0/15</div>
             </p>
-            <p>
+            <p class="fields">
                 <label><b>LEVEL</b></label>
                 <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)">
                 <div id="level-count" class="char-count">0/5</div>
@@ -121,11 +126,12 @@
             <input type="hidden" value="0" id="flag" name="flag">
             <p>
                 <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
-                <button type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_record()">CANCEL</button>
+                <button id="cancel-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_record()">CANCEL</button>
             </p>
         </form>
     </div>
 </div>
+
 
 
 <div id="viewModal" class="view-modal" style="display: none;">
@@ -137,7 +143,9 @@
                 <input type="file" id="uploadimage" name="uploadimage" style="display:none;" onchange="readURI(this)">
             </label>
         </p>
-        <form method="post" action="/update_user">
+        <form method="post" action="/register" enctype="multipart/form-data">
+            <input type="hidden" id="flag" name="flag" value="1">
+            <input type="hidden" id="idno" name="idno">
             <p>
                 <label><b>IDNO</b></label>
                 <input type="text" id="idno-view" name="idno" class="w3-input" readonly>
@@ -158,10 +166,8 @@
                 <label><b>LEVEL</b></label>
                 <input type="text" id="level-view" name="level" class="w3-input" readonly>
             </p>
-            <p>
-                <button type="button" class="w3-button w3-green w3-margin-top">EDIT</button>
-                <button type="reset" class="w3-button w3-amber w3-margin-top" onclick="closeModal()">CANCEL</button>
-            </p>
+            <button type="button" class="w3-button w3-blue w3-margin-top" onclick="editRecord()">EDIT</button>
+            <button type="button" class="w3-button w3-amber w3-margin-top" onclick="closeModal()">CANCEL</button>
         </form>
     </div>
 </div>
@@ -184,7 +190,7 @@
     
 
 <script>
-    const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
+    const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}"; //dili mo dawat siya if i link nako sa lain file 
 </script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}

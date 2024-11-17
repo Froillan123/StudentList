@@ -81,54 +81,78 @@ def substringer(s, phrase):
 
 @app.route('/register', methods=['POST'])
 def register():
-    idno: str = request.form['idno']
-    lastname: str = request.form['lastname']
-    firstname: str = request.form['firstname']
-    course: str = request.form['course']
-    level: str = request.form['level']
-    flag: str = request.form['flag']
-    file: object = request.files['uploadimage']
+    idno = request.form['idno']
+    lastname = request.form['lastname']
+    firstname = request.form['firstname']
+    course = request.form['course']
+    level = request.form['level']
+    flag = request.form['flag']
+    file = request.files['uploadimage']
 
     if not idno.isdigit():
         flash("ID Number must contain only digits!", 'error')
         return redirect(url_for('student_list'))
 
-    existing_user = get_user(idno)
-    
+    existing_user = getone_record('students', idno=idno)
+
     if existing_user and flag == '0':  
         flash(f"User ID '{idno}' already exists!", 'warning')
         return redirect(url_for('student_list')) 
 
     imagename = ''
-    if file.filename != '':
+    if file and file.filename != '':
         filename, extension = os.path.splitext(file.filename)
-        imagename = os.path.join(uploadfolder, f'{filename}{idno}{extension}')
-    
+        imagename = os.path.join(uploadfolder, f'{filename}_{idno}{extension}')
+        file.save(imagename)
+
     try:
-        ok: bool = False
-        if flag == '0':  
-            if file.filename != '':
+        ok = False
+        if flag == '0':  # Add new record
+            if imagename:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
             else:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
-            
-            msg: str = "New User Registered!" if ok else "Error Registering User!"
+
+            msg = "New User Registered Successfully!" if ok else "Error Registering User!"
             flash(msg, 'success' if ok else 'error')  
-            
-        else:
-            if file.filename != '':
-                ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
+
+        else:  # Update existing record
+            existing_student = getone_record('students', idno=idno)
+
+            if not existing_student:
+                flash("Student not found.", 'error')
+                return redirect(url_for('student_list'))
+
+            old_image = existing_student[0]['image']
+
+            # Check if changes were made
+            if (existing_student[0]['lastname'] == lastname and
+                existing_student[0]['firstname'] == firstname and
+                existing_student[0]['course'] == course and
+                existing_student[0]['level'] == level and
+                (not imagename or old_image == imagename)):
+                flash("No changes were made.", 'info')
             else:
-                ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
-            
-            msg: str = "User Updated Successfully!" if ok else "Error Updating User!"
-            flash(msg, 'success' if ok else 'error') 
-        
-        if file.filename != '' and ok:
-            file.save(imagename)
+                # Delete the old image if a new one is provided
+                if imagename and old_image != imagename:
+                    if os.path.exists(old_image):
+                        os.remove(old_image)  # Delete the old image
+
+                # Update the record
+                if imagename: 
+                    ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
+                else: 
+                    ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
+
+                msg = "User Updated Successfully!" if ok else "Error Updating User!"
+                flash(msg, 'success' if ok else 'error')
+
     except Exception as e:
-        flash(f"File Saving Error: {e}", 'error') 
-    return redirect(url_for('student_list')) 
+        flash(f"Error: {str(e)}", 'error')
+
+    return redirect(url_for('student_list'))
+
+
 
 
 @app.route('/delete_user', methods=['POST'])

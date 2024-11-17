@@ -11,7 +11,7 @@ let menuIcon = document.querySelector('#menu-icon');
         };
 
         function adjustNavbarStyles() {
-            if (window.innerWidth <= 445) {
+            if (window.innerWidth <= 487) {
                 navbarLinks.forEach(link => {
                 
                     link.classList.remove('w3-button', 'w3-red', 'w3-right', 'w3-margin-top', 'w3-margin-bottom', 'w3-white', 'w3-margin-right');
@@ -65,44 +65,80 @@ let menuIcon = document.querySelector('#menu-icon');
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function view_record(image, idno, lastname, firstname, course, level) {
+            
+
+        function viewrecordstudents(image, idno, lastname, firstname, course, level) {
+            document.getElementById('image-view').src = image; 
+            document.getElementById('idno-view').value = idno; 
+            document.getElementById('lastname-view').value = lastname; 
+            document.getElementById('firstname-view').value = firstname; 
+            document.getElementById('course-view').value = course; 
+            document.getElementById('level-view').value = level; 
+        
+            document.getElementById('viewModal').style.display = 'flex';
+        }
+        
+        function editRecord() {
+            const idno = document.getElementById('idno-view').value;
+            const lastname = document.getElementById('lastname-view').value;
+            const firstname = document.getElementById('firstname-view').value;
+            const course = document.getElementById('course-view').value;
+            const level = document.getElementById('level-view').value;
+            const image = document.getElementById('image-view').src;
+        
+            // Set values for the form fields
             document.getElementById('image').src = image;
             document.getElementById('idno').value = idno;
-            document.getElementById('idno').readOnly = true;
             document.getElementById('lastname').value = lastname;
             document.getElementById('firstname').value = firstname;
             document.getElementById('course').value = course;
             document.getElementById('level').value = level;
-            document.getElementById('flag').value = 1;
-            console.log(document.getElementById('flag').value);
+        
+            document.getElementById('idno').readOnly = true;
+        
+            document.getElementById('flag').value = '1';
+        
+            document.getElementById('reg').action = "/register"; 
+        
+            // Hide the close button when in edit mode
+            document.getElementById('close-login-btn').style.display = 'none';
+        
+            // Show the 'addStudentModal'
+            document.getElementById('viewModal').style.display = 'none';
+            document.getElementById('addStudentModal').style.display = 'flex';
+        
+            // Update the character count for fields
+            updateCount(document.getElementById('idno'), 'idno-count', 10);
+            updateCount(document.getElementById('lastname'), 'lastname-count', 50);
+            updateCount(document.getElementById('firstname'), 'firstname-count', 50);
+            updateCount(document.getElementById('course'), 'course-count', 15);
+            updateCount(document.getElementById('level'), 'level-count', 5);
         }
-        function cancel_record() {
-            document.getElementById('image').src = default_img_src;
-            document.getElementById('idno').value = '';
-            document.getElementById('idno').readOnly = false;
-            document.getElementById('lastname').value = '';
-            document.getElementById('firstname').value = '';
-            document.getElementById('course').value = '';
-            document.getElementById('level').value = '';
-            document.getElementById('flag').value = 0;
-            console.log(document.getElementById('flag').value);
-        }
-
-        function viewrecordstudents(image, idno, lastname, firstname, course, level) {
-            document.getElementById('image-view').src = image;
-            document.getElementById('idno-view').value = idno;
-            document.getElementById('lastname-view').value = lastname;
-            document.getElementById('firstname-view').value = firstname;
-            document.getElementById('course-view').value = course;
-            document.getElementById('level-view').value = level;
+        
+        
+        document.getElementById('reg').onsubmit = function (event) {
+            event.preventDefault();  // Prevents the default form submission
             
-            document.getElementById('viewModal').style.display = 'flex';
+            if (checkIfFieldsExists()) {  // This function should return true if fields are valid
+                this.submit();  // If the fields are valid, submit the form
+                document.getElementById('addStudentModal').style.display = 'none';  // Close the modal
+            } else {
+                // Optionally, show a message to the user if validation fails
+                alert("Please fill out all required fields.");
+            }
         }
+        // Ensure the event listener is attached to the close button in the addStudentModal
+        document.getElementById('close-login-btn').addEventListener('click', function() {
+            // Close the 'addStudentModal' when the close button is clicked
+            document.getElementById('addStudentModal').style.display = 'none';
+            document.getElementById('viewModal').style.display = 'none';  // Optionally hide the 'viewModal' as well
+        });
+
 
         function closeModal() {
             document.getElementById('viewModal').style.display = 'none';
         }
-
+        
 
         
         window.addEventListener('DOMContentLoaded', (event) => {
@@ -166,7 +202,3 @@ window.onclick = function(event) {
         document.getElementById('addStudentModal').style.display = 'none';
     }
 }
-
-document.getElementById('close-login-btn').addEventListener('click', function() {
-    document.getElementById('addStudentModal').style.display = 'none';
-});
