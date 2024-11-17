@@ -4,9 +4,8 @@ from flask_session import Session
 import os
 
 app = Flask(__name__)
+
 app.config
-
-
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = "/tmp/sessions" 
 app.config["SESSION_COOKIE_NAME"] = "session_cookie" 
@@ -41,8 +40,6 @@ def login():
             flash("Invalid username or password", 'error') 
             return redirect(url_for('login')) 
     return render_template('login.html', pagetitle=pagetitle)
-
-
 
 @app.route('/students')
 def student_list():
@@ -96,7 +93,7 @@ def register():
     existing_user = getone_record('students', idno=idno)
 
     if existing_user and flag == '0':  
-        flash(f"User ID '{idno}' already exists!", 'warning')
+        flash(f"Student Idno '{idno}' already exists!", 'warning')
         return redirect(url_for('student_list')) 
 
     imagename = ''
@@ -113,10 +110,10 @@ def register():
             else:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
 
-            msg = "New User Registered Successfully!" if ok else "Error Registering User!"
+            msg = "Student Registered Successfully!" if ok else "Error Registering User!"
             flash(msg, 'success' if ok else 'error')  
 
-        else:  # Update existing record
+        else:  
             existing_student = getone_record('students', idno=idno)
 
             if not existing_student:
@@ -125,7 +122,6 @@ def register():
 
             old_image = existing_student[0]['image']
 
-            # Check if changes were made
             if (existing_student[0]['lastname'] == lastname and
                 existing_student[0]['firstname'] == firstname and
                 existing_student[0]['course'] == course and
@@ -133,18 +129,16 @@ def register():
                 (not imagename or old_image == imagename)):
                 flash("No changes were made.", 'info')
             else:
-                # Delete the old image if a new one is provided
                 if imagename and old_image != imagename:
                     if os.path.exists(old_image):
-                        os.remove(old_image)  # Delete the old image
+                        os.remove(old_image)  
 
-                # Update the record
                 if imagename: 
                     ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
                 else: 
                     ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
 
-                msg = "User Updated Successfully!" if ok else "Error Updating User!"
+                msg = "Student Updated Successfully!" if ok else "Error Updating Student!"
                 flash(msg, 'success' if ok else 'error')
 
     except Exception as e:

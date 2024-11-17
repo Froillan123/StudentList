@@ -235,6 +235,30 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 .w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffffcc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}
 
 
+
+:root {
+    --bg-color: #1f242d;
+    --main-color: #0ef;
+}
+
+html::-webkit-scrollbar
+{
+  width: 1.2em;
+  height: 1em;
+}
+
+html::-webkit-scrollbar-track
+{
+  margin-block: 0.5em;
+}
+
+html::-webkit-scrollbar-thumb
+{
+  background: #71b7f1;
+  border-radius: 100vw;
+  margin-block: 0.5em;
+}
+
 #customAlert {
     position: fixed;
     top: 0;
@@ -270,9 +294,9 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 }
 
 .flash-message {
-    max-width: 350px;
+    max-width: 390px;
     position: fixed;
-    bottom: 4rem;
+    bottom: 3rem;
     left: 0;
     right: 0;
     margin: auto;
@@ -292,55 +316,49 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 
 .flash-message.success {
     background-color: #bcf3be;
-    border-left: 0.4rem solid #388E3C; 
     border-radius: 0.4rem;
-    color: #388E3C; 
+    color: #1a5f1b; /* Darker green for contrast */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-
 .flash-message.warning {
-    background-color: #f6deb4;
+    background-color: #f1d19a;
     border-radius: 0.4rem;
-    border-left: 0.4rem solid #ffa502;
-    color: #dc8f00;
+    color: #aa6d04; /* Darker orange for contrast */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .flash-message.error {
-    background-color: #f5c4c4; 
-    color: #ef3636;
+    background-color: #f5c4c4;
     border-radius: 0.4rem;
-    border-left: 0.4rem solid #ea4848;
+    color: #a40000; /* Darker red for contrast */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-
 .flash-message.delete-success {
-    background-color: #f5c4c4; 
+    background-color: #f5c4c4;
     border-radius: 0.4rem;
-    color: #ef3636;
-    border-left: 0.4rem solid #ea4848;
+    color: #a40000; /* Darker red for contrast */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .flash-message.info {
-    background-color: #c5daf2;  
+    background-color: #c5daf2;
     border-radius: 0.4rem;
-    border-left: 0.4rem solid #2b7cc4; 
-    color: #086dc5;
+    color: #074a91; /* Darker blue for contrast */
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
 }
+
 
 
 @keyframes fadeSlideOut {
@@ -362,12 +380,31 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 {
     width: 30%;
 }
+#main_container
+{
+    padding: 1rem 5%;
+}
+
+.header
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--bg-color);
+    z-index: 100;
+}
+.header.sticky
+{
+    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+}
 
 .styled-table {
     width: 100%;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     margin-bottom: 20px;
+    margin-top: 5rem;
 }
 
 .styled-table th, .styled-table td {
@@ -396,7 +433,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 }
 
 .styled-table .delete-btn i {
-    margin-right: 5px;
+    text-align: center;
 }
 
 .custom-modal {
@@ -473,13 +510,6 @@ input[readonly] {
     display: none; 
 }
 
-#close-login-btn {
-    position: absolute;
-    top: 15px; 
-    right: 15px;
-    font-size: 24px; 
-    cursor: pointer; 
-}
 .w3-table-all th {
     background-color: #2196F3; 
     color: #ffffff; 
@@ -671,7 +701,7 @@ p.fields
 
     .navbar {
         position: absolute;
-        top: 7%;
+        top: 90%;
         left: 50%;
         width: 50%;
         padding: 0.6rem 1%;
@@ -699,7 +729,6 @@ p.fields
         text-decoration: none;
     }    
 
-    /* Icon styling */
     #add i, #logout i {
         margin-right: 0.5rem;
     }

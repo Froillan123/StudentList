@@ -1,8 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
 <div class='w3-container w3-blue w3-margin-bottom'>
     <h3 class="w3-center w3-margin-left">{{pagetitle}}</h3>
 </div>
-{% extends 'base.html' %}
-{% block content %}
+
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}

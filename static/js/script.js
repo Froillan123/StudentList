@@ -33,7 +33,6 @@ let menuIcon = document.querySelector('#menu-icon');
             }
         }
 
-
         window.addEventListener('load', adjustNavbarStyles);
         window.addEventListener('resize', adjustNavbarStyles);
 
@@ -74,7 +73,6 @@ let menuIcon = document.querySelector('#menu-icon');
             document.getElementById('firstname-view').value = firstname; 
             document.getElementById('course-view').value = course; 
             document.getElementById('level-view').value = level; 
-        
             document.getElementById('viewModal').style.display = 'flex';
         }
         
@@ -86,28 +84,22 @@ let menuIcon = document.querySelector('#menu-icon');
             const level = document.getElementById('level-view').value;
             const image = document.getElementById('image-view').src;
         
-            // Set values for the form fields
+            // Populate fields with selected record values
             document.getElementById('image').src = image;
             document.getElementById('idno').value = idno;
             document.getElementById('lastname').value = lastname;
             document.getElementById('firstname').value = firstname;
             document.getElementById('course').value = course;
             document.getElementById('level').value = level;
-        
+            
             document.getElementById('idno').readOnly = true;
-        
-            document.getElementById('flag').value = '1';
-        
+            document.getElementById('flag').value = '1'; 
             document.getElementById('reg').action = "/register"; 
-        
-            // Hide the close button when in edit mode
-            document.getElementById('close-login-btn').style.display = 'none';
-        
-            // Show the 'addStudentModal'
+             
             document.getElementById('viewModal').style.display = 'none';
             document.getElementById('addStudentModal').style.display = 'flex';
         
-            // Update the character count for fields
+        
             updateCount(document.getElementById('idno'), 'idno-count', 10);
             updateCount(document.getElementById('lastname'), 'lastname-count', 50);
             updateCount(document.getElementById('firstname'), 'firstname-count', 50);
@@ -115,26 +107,26 @@ let menuIcon = document.querySelector('#menu-icon');
             updateCount(document.getElementById('level'), 'level-count', 5);
         }
         
+        function cancel_edit() {
+            document.getElementById('image').src = default_img_src; 
+            document.getElementById('idno').readOnly = false; 
+            document.getElementById('idno').value = '';
+            document.getElementById('lastname').value = '';
+            document.getElementById('firstname').value = '';
+            document.getElementById('course').value = '';
+            document.getElementById('level').value = '';
+            document.getElementById('flag').value = '0'; 
         
-        document.getElementById('reg').onsubmit = function (event) {
-            event.preventDefault();  // Prevents the default form submission
-            
-            if (checkIfFieldsExists()) {  // This function should return true if fields are valid
-                this.submit();  // If the fields are valid, submit the form
-                document.getElementById('addStudentModal').style.display = 'none';  // Close the modal
-            } else {
-                // Optionally, show a message to the user if validation fails
-                alert("Please fill out all required fields.");
-            }
-        }
-        // Ensure the event listener is attached to the close button in the addStudentModal
-        document.getElementById('close-login-btn').addEventListener('click', function() {
-            // Close the 'addStudentModal' when the close button is clicked
             document.getElementById('addStudentModal').style.display = 'none';
-            document.getElementById('viewModal').style.display = 'none';  // Optionally hide the 'viewModal' as well
-        });
-
-
+        
+            document.getElementById('idno-count').textContent = '0/10';
+            document.getElementById('lastname-count').textContent = '0/50';
+            document.getElementById('firstname-count').textContent = '0/50';
+            document.getElementById('course-count').textContent = '0/15';
+            document.getElementById('level-count').textContent = '0/5';
+        }
+        
+  
         function closeModal() {
             document.getElementById('viewModal').style.display = 'none';
         }

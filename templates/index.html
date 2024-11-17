@@ -1,4 +1,7 @@
-<div class='w3-container w3-blue w3-margin-bottom'>
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='w3-container w3-blue w3-margin-bottom header'>
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
     <i class="fa fa-bars w3-right w3-margin-top w3-margin-bottom" id="menu-icon"></i> 
     <nav class="navbar">
@@ -11,11 +14,6 @@
     </nav>
 </div>
 
-
-
-
-{% extends 'base.html' %}
-{% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -76,9 +74,10 @@
                     <td class="w3-center" data-cell="COURSE:">{{ user["course"] }}</td>
                     <td class="w3-center" data-cell="LEVEL:">{{ user["level"] }}</td>
                     <td class="w3-center" data-cell="ACTION:">
-                        <button class="w3-button w3-red delete-btn" onclick="openCustomAlert('{{ user['idno'] }}')">
-                            <i class="fas fa-times"></i> <!-- Only the X icon will be shown -->
+                        <button class="w3-button w3-red delete-btn delete" onclick="openCustomAlert('{{ user['idno'] }}')">
+                            <i class="fas fa-times"></i>
                         </button>
+                        
                     </td>
                 </tr>
                 {% endfor %}
@@ -91,7 +90,6 @@
 <div class="custom-modal" id="addStudentModal" style="display: none;">
     <div class="custom-modal-content w3-card-4">
         <form method="post" id="reg" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
-            <div id="close-login-btn" class="fas fa-times"></div>
             <p class="w3-center w3-padding">
                 <label for="uploadimage">
                     <img id="image" class="image">
@@ -126,8 +124,8 @@
             <input type="hidden" value="0" id="flag" name="flag">
             <p>
                 <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
-                <button id="cancel-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_record()">CANCEL</button>
-            </p>
+                <button id="cancel-edit-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_edit()">CANCEL</button>
+            </p>            
         </form>
     </div>
 </div>
@@ -136,7 +134,6 @@
 
 <div id="viewModal" class="view-modal" style="display: none;">
     <div class="view-modal-content w3-card-4">
-        <div id="close-login-btn" class="fas fa-times" onclick="closeModal()"></div>
         <p class="w3-center w3-padding">
             <label for="uploadimage">
                 <img id="image-view" class="image">
@@ -183,7 +180,7 @@
                     <input type="hidden" id="deleteIdNo" name="idno">
                     <button type="submit" class="confirm-btn w3-red w3-button">Confirm</button>
                 </form>
-                <button class="cancel-btn w3-blue w3-button w3-margin-bottom" onclick="closeAlert()">Cancel</button>
+                <button class="cancel-btn w3-blue w3-button w3-margin-top w3-margin-bottom" onclick="closeAlert()">Cancel</button>
             </div>
         </div>
     </div>
