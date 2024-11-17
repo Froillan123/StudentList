@@ -48,7 +48,7 @@ def login():
 def student_list():
     if 'username' in session:
         pagetitle = "Student List"
-        print(f"User logged in: {session['username']}")  # Debugging line to see session value
+        print(f"User logged in: {session['username']}")
         return render_template('index.html', data=getall_records('students'), pagetitle=pagetitle, users=get_users())
     else:
         flash("Please log in first!", "warning")
@@ -131,13 +131,12 @@ def register():
     return redirect(url_for('student_list')) 
 
 
-
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
     idno: str = request.form['idno']
-    print(f"Deleting user with ID: {idno}")  # Debugging line
+    print(f"Deleting user with ID: {idno}") 
     imagename: str = get_user(idno)[0]['image']
-    print(f"Image path: {imagename}")  # Debugging line
+    print(f"Image path: {imagename}") 
     ok: bool = delete_record('students', idno=idno)
     
     if ok:
@@ -150,7 +149,7 @@ def delete_user():
     try:
         if os.path.exists(imagename):
             os.remove(imagename)
-            print(f"Deleted image: {imagename}")  # Debugging line
+            print(f"Deleted image: {imagename}")
     except Exception as e:
         flash(f"Error within '/delete_user': File path error", 'error')
         print(e)

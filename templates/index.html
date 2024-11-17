@@ -1,11 +1,12 @@
 <div class='w3-container w3-blue w3-margin-bottom'>
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
-    <i class='bx bx-menu w3-right w3-margin-top w3-margin-bottom' id="menu-icon"></i> 
+    <i class="fa fa-bars w3-right w3-margin-top w3-margin-bottom" id="menu-icon"></i> 
     <nav class="navbar">
         <a href="/logout" class="w3-button w3-red w3-right w3-margin-top w3-margin-bottom" id="logout">LOG-OUT</a>
         <a href="javascript:void(0);" class="w3-right w3-button w3-margin-right w3-white w3-margin-top" id="add" onclick="openAddStudentModal()">Add Student</a>
     </nav>
 </div>
+
 
 
 {% extends 'base.html' %}
@@ -44,39 +45,46 @@
     {% endif %}
 {% endwith %}
 
-<div class='w3-row-padding' id='main_container'>
-    <div class='w3-full'>
-        <table class="w3-table-all" id='table'>
-            <tr id='tr1'>
-                <th>IDNO</th>
-                <th>LASTNAME</th>
-                <th>FIRSTNAME</th>
-                <th>COURSE</th>
-                <th>LEVEL</th>
-                <th>Action</th>
-            </tr>
-            {% for user in users %}
-            <tr id='tr2'>
-                <td>{{ user["idno"] }}</td>
-                <td>{{ user["lastname"] }}</td>
-                <td>{{ user["firstname"] }}</td>
-                <td>{{ user["course"] }}</td>
-                <td>{{ user["level"] }}</td>
-                <td>
-                    <button class="w3-button w3-red delete-btn" onclick="openCustomAlert('{{ user['idno'] }}')">
-                        <i class="fas fa-times"></i> <!-- Only the X icon will be shown -->
-                    </button>
-                                  
-                </td>
-            </tr>
-            {% endfor %}
+<div class="w3-row-padding" id="main_container">
+    <div class="w3-full">
+        <table class="w3-table-all styled-table" id="table">
+            <thead>
+                <tr id="tr1">
+                    <th class="w3-center">IDNO</th>
+                    <th class="w3-center">LASTNAME</th>
+                    <th class="w3-center">FIRSTNAME</th>
+                    <th class="w3-center">COURSE</th>
+                    <th class="w3-center">LEVEL</th>
+                    <th class="w3-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr id="tr2">
+                    <td class="w3-center" data-cell="IDNO">
+                        <a href="#" onclick="viewrecordstudents('{{ user['image'] }}', '{{ user['idno'] }}', '{{ user['lastname'] }}', '{{ user['firstname'] }}', '{{ user['course'] }}', '{{ user['level'] }}')">
+                            {{ user["idno"] }}
+                        </a>
+                    </td>
+                    <td class="w3-center" data-cell="LASTNAME">{{ user["lastname"] }}</td>
+                    <td class="w3-center" data-cell="FIRSTNAME">{{ user["firstname"] }}</td>
+                    <td class="w3-center" data-cell="COURSE">{{ user["course"] }}</td>
+                    <td class="w3-center" data-cell="LEVEL">{{ user["level"] }}</td>
+                    <td class="w3-center" data-cell="ACTION">
+                        <button class="w3-button w3-red delete-btn" onclick="openCustomAlert('{{ user['idno'] }}')">
+                            <i class="fas fa-times"></i> <!-- Only the X icon will be shown -->
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-        <div class='w3-container w3-margin' id='empty_table_msg' style='display: none;'>Nothing follows...</div>
+        <div class="w3-container w3-margin" id="empty_table_msg" style="display: none;">Nothing follows...</div>
     </div>
 </div>
 
 <div class="custom-modal" id="addStudentModal" style="display: none;">
-    <div class="custom-modal-content w3-card-4 w3-round-xlarge">
+    <div class="custom-modal-content w3-card-4">
         <form method="post" action="/register" enctype="multipart/form-data" onsubmit="return checkIfFieldsExists()">
             <div id="close-login-btn" class="fas fa-times"></div>
             <p class="w3-center w3-padding">
@@ -87,32 +95,79 @@
             </p>
             <p>
                 <label><b>IDNO</b></label>
-                <input type="text" id="idno" name="idno" class="w3-input">
+                <input type="text" id="idno" name="idno" class="w3-input" maxlength="10" oninput="updateCount(this, 'idno-count', 10)">
+                <div id="idno-count" class="char-count">0/10</div>
             </p>
             <p>
                 <label><b>LASTNAME</b></label>
-                <input type="text" id="lastname" name="lastname" class="w3-input">
+                <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="25" oninput="updateCount(this, 'lastname-count', 25)">
+                <div id="lastname-count" class="char-count">0/25</div>
             </p>
             <p>
                 <label><b>FIRSTNAME</b></label>
-                <input type="text" id="firstname" name="firstname" class="w3-input">
+                <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="25" oninput="updateCount(this, 'firstname-count', 25)">
+                <div id="firstname-count" class="char-count">0/25</div>
             </p>
             <p>
                 <label><b>COURSE</b></label>
-                <input type="text" id="course" name="course" class="w3-input">
+                <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)">
+                <div id="course-count" class="char-count">0/15</div>
             </p>
             <p>
                 <label><b>LEVEL</b></label>
-                <input type="text" id="level" name="level" class="w3-input">
+                <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)">
+                <div id="level-count" class="char-count">0/5</div>
             </p>
             <input type="hidden" value="0" id="flag" name="flag">
             <p>
                 <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
-                <button type="reset" class="w3-button w3-red w3-margin-top" onclick="cancel_record()">CANCEL</button>
+                <button type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_record()">CANCEL</button>
             </p>
         </form>
     </div>
 </div>
+
+
+<div id="viewModal" class="view-modal" style="display: none;">
+    <div class="view-modal-content w3-card-4">
+        <div id="close-login-btn" class="fas fa-times" onclick="closeModal()"></div>
+        <p class="w3-center w3-padding">
+            <label for="uploadimage">
+                <img id="image-view" class="image">
+                <input type="file" id="uploadimage" name="uploadimage" style="display:none;" onchange="readURI(this)">
+            </label>
+        </p>
+        <form method="post" action="/update_user">
+            <p>
+                <label><b>IDNO</b></label>
+                <input type="text" id="idno-view" name="idno" class="w3-input" readonly>
+            </p>
+            <p>
+                <label><b>LASTNAME</b></label>
+                <input type="text" id="lastname-view" name="lastname" class="w3-input" readonly>
+            </p>
+            <p>
+                <label><b>FIRSTNAME</b></label>
+                <input type="text" id="firstname-view" name="firstname" class="w3-input" readonly>
+            </p>
+            <p>
+                <label><b>COURSE</b></label>
+                <input type="text" id="course-view" name="course" class="w3-input" readonly>
+            </p>
+            <p>
+                <label><b>LEVEL</b></label>
+                <input type="text" id="level-view" name="level" class="w3-input" readonly>
+            </p>
+            <p>
+                <button type="button" class="w3-button w3-green w3-margin-top">EDIT</button>
+                <button type="reset" class="w3-button w3-amber w3-margin-top" onclick="closeModal()">CANCEL</button>
+            </p>
+        </form>
+    </div>
+</div>
+
+
+
 
     <div id="customAlert" style="display: none;">
         <div class="alert-content">
@@ -122,169 +177,14 @@
                     <input type="hidden" id="deleteIdNo" name="idno">
                     <button type="submit" class="confirm-btn w3-red w3-button">Confirm</button>
                 </form>
-                <button class="cancel-btn w3-blue w3-button" onclick="closeAlert()">Cancel</button>
+                <button class="cancel-btn w3-blue w3-button w3-margin-bottom" onclick="closeAlert()">Cancel</button>
             </div>
         </div>
     </div>
     
 
-<script language="JavaScript">
-
-let menuIcon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
-let navbarLinks = document.querySelectorAll('.navbar a');
-let logoutBtn = document.getElementById('logout');  // Target the LOG-OUT button
-let addBtn = document.getElementById('add');  // Target the Add Student button
-
-// Toggle the navbar when the menu icon is clicked
-menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-};
-
-// Function to adjust styles based on screen width
-function adjustNavbarStyles() {
-    if (window.innerWidth <= 445) {
-        // Remove specific styles for small screens (445px or less)
-        navbarLinks.forEach(link => {
-            // Remove W3-specific styles for all navbar links
-            link.classList.remove('w3-button', 'w3-red', 'w3-right', 'w3-margin-top', 'w3-margin-bottom', 'w3-white', 'w3-margin-right');
-        });
-        // Ensure the logout button has the correct styles for small screens
-        logoutBtn.classList.remove('w3-red');
-        addBtn.classList.remove('w3-white'); // Optional: You can manage styles for Add Student here as well
-    } else {
-        // Apply styles when screen width > 445px
-        logoutBtn.classList.add('w3-red');
-        logoutBtn.classList.remove('w3-white');  // Ensure the logout button remains red
-
-        addBtn.classList.add('w3-white'); // Keep "Add Student" white
-
-        // Reset styles for other navbar links
-        navbarLinks.forEach(link => {
-            link.classList.add('w3-button', 'w3-right', 'w3-margin-top', 'w3-margin-bottom', 'w3-margin-right');
-        });
-    }
-}
-
-// Call adjustNavbarStyles when the page is loaded or resized
-window.addEventListener('load', adjustNavbarStyles);
-window.addEventListener('resize', adjustNavbarStyles);
-
-
-
-    
-        console.log(document.getElementById('flag').value);
-        const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
-        document.getElementById('image').src = default_img_src;
-        defaultMsgIfTableEmpty();
-
-        function openCustomAlert(idno) {
-        document.getElementById('deleteIdNo').value = idno;
-        document.getElementById('customAlert').style.display = 'flex'; 
-        }
-
-        function closeAlert() {
-        document.getElementById('customAlert').style.display = 'none';
-        }
-
-        function readURI(input) {
-            if(input.files && input.files[0]){
-                reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('image').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function view_record(image, idno, lastname, firstname, course, level) {
-            document.getElementById('image').src = image;
-            document.getElementById('idno').value = idno;
-            document.getElementById('idno').readOnly = true;
-            document.getElementById('lastname').value = lastname;
-            document.getElementById('firstname').value = firstname;
-            document.getElementById('course').value = course;
-            document.getElementById('level').value = level;
-            document.getElementById('flag').value = 1;
-            console.log(document.getElementById('flag').value);
-        }
-        function cancel_record() {
-            document.getElementById('image').src = default_img_src;
-            document.getElementById('idno').value = '';
-            document.getElementById('idno').readOnly = false;
-            document.getElementById('lastname').value = '';
-            document.getElementById('firstname').value = '';
-            document.getElementById('course').value = '';
-            document.getElementById('level').value = '';
-            document.getElementById('flag').value = 0;
-            console.log(document.getElementById('flag').value);
-        }
-        
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const flashMessages = document.querySelectorAll('.flash-message');
-            
-            flashMessages.forEach((flashMessage) => {
-                setTimeout(() => {
-                    flashMessage.classList.add('fade-out');
-                }, 2500);
-
-                flashMessage.addEventListener('animationend', () => {
-                    flashMessage.remove();
-                });
-            });
-        });
-
-        function substringer(str, phrase) {
-            const index = str.indexOf(phrase);
-            str = (index !== -1) ? str.slice(index) : ''; 
-            return str;
-        }
-
-        function defaultMsgIfTableEmpty() {
-            if (document.querySelectorAll('#table tbody #tr2').length == 0) {
-                console.log('table is empty');
-                document.getElementById('empty_table_msg').style = 'display: block;';
-            } else {
-                console.log('table is not empty!!');
-            }
-        }
-
-    function checkIfFieldsExists() {
-    const idno = document.getElementById('idno').value.trim();
-    const lastname = document.getElementById('lastname').value.trim();
-    const firstname = document.getElementById('firstname').value.trim();
-    const course = document.getElementById('course').value.trim();
-    const level = document.getElementById('level').value.trim();
-    const img = substringer(document.getElementById('image').src, "/static/img/");
-    
-    if (!idno || !lastname || !firstname || !course || !level) {
-        alert("Please fill in all fields.");
-        return false;
-    }
-
-    if (img == default_img_src) {
-        alert("Please insert an image.");
-        return false;
-    }
-
-    console.log(img);
-    console.log(default_img_src);
-    return true;
-}
-
-function openAddStudentModal() {
-    document.getElementById('addStudentModal').style.display = 'flex';
-}
-
-window.onclick = function(event) {
-    if (event.target == document.getElementById('addStudentModal')) {
-        document.getElementById('addStudentModal').style.display = 'none';
-    }
-}
-
-document.getElementById('close-login-btn').addEventListener('click', function() {
-    document.getElementById('addStudentModal').style.display = 'none';
-});
-
-    </script>
+<script>
+    const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
+</script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
