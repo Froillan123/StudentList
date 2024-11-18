@@ -373,10 +373,12 @@ html::-webkit-scrollbar-thumb
 }
 
 #image, #image-view {
-    width: 40%;       /* Set the width to 40% */
-    height: 190px;    /* Set the height to 190px */
-    object-fit: cover;/* Ensure the image covers the area without distortion */
-    object-position: center; /* Center the image within the container */
+    width: 40%;
+    height: 190px;  
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 3px solid #71b7f1;
 }
 
 #main_container
@@ -599,13 +601,7 @@ p.fields
         flex-direction: column-reverse;
     }
 
-    #image {
-        width: 50%;
-    }
-    #image-view
-    {
-        width: 50%;
-    }
+
     .custom-modal-content {
         width: 55%; 
     }
@@ -712,6 +708,13 @@ p.fields
     }
     #add i, #logout i {
         margin-right: 0.5rem;
+    }
+    #image {
+        width: 80%;
+    }
+    #image-view
+    {
+        width: 80%;
     }
 }
 
