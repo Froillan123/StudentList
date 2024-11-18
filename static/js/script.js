@@ -194,3 +194,5 @@ window.onclick = function(event) {
         document.getElementById('addStudentModal').style.display = 'none';
     }
 }
+
+

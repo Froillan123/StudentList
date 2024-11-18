@@ -558,23 +558,8 @@ p.fields
     color: gray;
     opacity: 0.6;
 }
-
 @media (max-width: 1000px) {
-    .styled-table {
-        table-layout: auto;
-        width: 100%;
-        overflow-x: auto; 
-        display: block; 
-    }
-
-    .styled-table th {
-        white-space: nowrap;
-    }
-
-    .styled-table-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+    
     #idno-count,
     #lastname-count,
     #firstname-count,
@@ -616,6 +601,10 @@ p.fields
     }
 
     #image {
+        width: 50%;
+    }
+    #image-view
+    {
         width: 50%;
     }
     .custom-modal-content {
@@ -718,7 +707,10 @@ p.fields
         border-radius: 5px;  
         text-decoration: none;
     }    
-
+    #logout i 
+    {
+        color: rgb(243, 7, 7);
+    }
     #add i, #logout i {
         margin-right: 0.5rem;
     }
