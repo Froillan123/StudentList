@@ -317,7 +317,7 @@ html::-webkit-scrollbar-thumb
 .flash-message.success {
     background-color: #bcf3be;
     border-radius: 0.4rem;
-    color: #1a5f1b; /* Darker green for contrast */
+    color: #1a5f1b; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -326,7 +326,7 @@ html::-webkit-scrollbar-thumb
 .flash-message.warning {
     background-color: #f1d19a;
     border-radius: 0.4rem;
-    color: #aa6d04; /* Darker orange for contrast */
+    color: #aa6d04; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -335,7 +335,7 @@ html::-webkit-scrollbar-thumb
 .flash-message.error {
     background-color: #f5c4c4;
     border-radius: 0.4rem;
-    color: #a40000; /* Darker red for contrast */
+    color: #a40000; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -344,7 +344,7 @@ html::-webkit-scrollbar-thumb
 .flash-message.delete-success {
     background-color: #f5c4c4;
     border-radius: 0.4rem;
-    color: #a40000; /* Darker red for contrast */
+    color: #a40000; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -353,7 +353,7 @@ html::-webkit-scrollbar-thumb
 .flash-message.info {
     background-color: #c5daf2;
     border-radius: 0.4rem;
-    color: #074a91; /* Darker blue for contrast */
+    color: #074a91;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -372,14 +372,13 @@ html::-webkit-scrollbar-thumb
     }
 }
 
-#image 
-{
-    width: 30%;
+#image, #image-view {
+    width: 40%;       /* Set the width to 40% */
+    height: 190px;    /* Set the height to 190px */
+    object-fit: cover;/* Ensure the image covers the area without distortion */
+    object-position: center; /* Center the image within the container */
 }
-#image-view
-{
-    width: 30%;
-}
+
 #main_container
 {
     padding: 1rem 5%;

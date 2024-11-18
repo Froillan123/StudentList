@@ -104,7 +104,7 @@ def register():
 
     try:
         ok = False
-        if flag == '0':  # Add new record
+        if flag == '0': 
             if imagename:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
             else:
