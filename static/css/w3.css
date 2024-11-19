@@ -295,6 +295,7 @@ html::-webkit-scrollbar-thumb
 
 .flash-message {
     max-width: 390px;
+    height: 49px;
     position: fixed;
     bottom: 3rem;
     left: 0;
@@ -302,6 +303,7 @@ html::-webkit-scrollbar-thumb
     margin: auto;
     transition: opacity 0.4s ease-in, transform 0.4s ease-in;
     gap: 1rem;
+    padding: 0;
 }
 
 
@@ -375,10 +377,6 @@ html::-webkit-scrollbar-thumb
 #image, #image-view {
     width: 40%;
     height: 190px;  
-    object-fit: cover;
-    object-position: center;
-    border-radius: 50%;
-    border: 3px solid #71b7f1;
 }
 
 #main_container
@@ -448,6 +446,7 @@ html::-webkit-scrollbar-thumb
     z-index: 10000;
     height: 100%;
     width: 100%;
+    
 }
 
 .custom-modal-content {
@@ -457,7 +456,29 @@ html::-webkit-scrollbar-thumb
     border: 1px solid #888;
     width: 35%;  
     max-width: 650px;
-    position: relative; 
+    max-height: 90vh;
+    overflow-y: auto; 
+    position: relative;
+}
+
+
+.custom-modal-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.custom-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px; 
+}
+
+.custom-modal-content::-webkit-scrollbar-thumb {
+    background-color: #71b7f1; 
+    border-radius: 10px;
+    border: 3px solid #f1f1f1;
+}
+
+.custom-modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: #4a90e2; 
 }
 
 .custom-modal-content .w3-closebtn {
@@ -496,8 +517,29 @@ html::-webkit-scrollbar-thumb
     border: 1px solid #888;
     width: 35%;  
     max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto; 
     position: relative; 
 }
+
+.view-modal-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.view-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px; 
+}
+
+.view-modal-content::-webkit-scrollbar-thumb {
+    background-color: #71b7f1; 
+    border-radius: 10px;
+    border: 3px solid #f1f1f1;
+}
+
+
+
+
 input[readonly] {
     background-color: #f0f0f0;
     cursor: not-allowed;
@@ -521,41 +563,31 @@ p.fields
     position: relative;
 }
 #idno-count {
-    position: absolute;
-    top: 35%;
-    left: 87%;
+    
     color: gray;              
     opacity: 0.6;
 }
 
 #lastname-count {
-    position: absolute;
-    top: 46%;
-    left: 87%;
+   
     color: gray;
     opacity: 0.6;
 }
 
 #firstname-count {
-    position: absolute;
-    top: 57%;
-    left: 87%;
+   
     color: gray;
     opacity: 0.6;
 }
 
 #course-count {
-    position: absolute;
-    top: 69%;
-    left: 87%;
+    
     color: gray;
     opacity: 0.6;
 }
 
 #level-count {
-    position: absolute;
-    top: 80%;
-    left: 87%;
+    
     color: gray;
     opacity: 0.6;
 }

@@ -30,7 +30,7 @@ def login():
         password = request.form.get('password')
         
         if not username or not password:
-            flash("Both username and password are required", 'error')
+            flash("Username and Password are required", 'error')
             return redirect(url_for('login'))
         if userlogin(username, password):
             session['username'] = username
