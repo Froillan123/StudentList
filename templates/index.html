@@ -99,30 +99,35 @@
             <p class="fields">
                 <label><b>IDNO</b></label>
                 <input type="text" id="idno" name="idno" class="w3-input" maxlength="10" oninput="updateCount(this, 'idno-count', 10)">
-                <span id="idno-count" class="char-count">0/10</>
+                <span id="idno-count" class="char-count">0/10</span>
             </p>
             <p class="fields">
                 <label><b>LASTNAME</b></label>
-                <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="50" oninput="updateCount(this, 'lastname-count', 50)">
-                <div id="lastname-count" class="char-count">0/50</div>
+                <div style="position: relative;">
+                    <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="50" oninput="updateCount(this, 'lastname-count', 50)">
+                    <span id="lastname-count" class="char-count">0/50</span>
+                </div>
             </p>
             <p class="fields">
                 <label><b>FIRSTNAME</b></label>
-                <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="50" oninput="updateCount(this, 'firstname-count', 50)">
-                <div id="firstname-count" class="char-count">0/50</div>
+                <div style="position: relative;">
+                    <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="50" oninput="updateCount(this, 'firstname-count', 50)">
+                    <span id="firstname-count" class="char-count">0/50</span>
+                </div>
             </p>
             <p class="fields">
                 <label><b>COURSE</b></label>
-                <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)">
-                <div id="course-count" class="char-count">0/15</div>
+                <div style="position: relative;">
+                    <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)">
+                    <span id="course-count" class="char-count">0/15</span>
+                </div>
             </p>
             <p class="fields">
                 <label><b>LEVEL</b></label>
-                <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)">
-                <div id="level-count" class="char-count">0/5</div>
-            </p>
-            <input type="hidden" value="0" id="flag" name="flag">
-            <p>
+                <div style="position: relative;">
+                    <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)">
+                    <span id="level-count" class="char-count">0/5</span>
+                </div>
                 <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
                 <button id="cancel-edit-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_edit()">CANCEL</button>
             </p>            

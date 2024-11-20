@@ -147,8 +147,6 @@ def register():
     return redirect(url_for('student_list'))
 
 
-
-
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
     idno: str = request.form['idno']

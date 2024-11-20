@@ -562,45 +562,24 @@ p.fields
 {
     position: relative;
 }
-#idno-count {
-    
-    color: gray;              
-    opacity: 0.6;
+#idno-count 
+{
+    position: absolute;
+    right: 10px;
+    top: 70%;
+    transform: translateY(-50%);
+    color: gray;
 }
 
-#lastname-count {
-   
+#lastname-count, #firstname-count , #course-count, #level-count 
+{
+    position: absolute;
+    right: 10px;
+    top: 54%;
+    transform: translateY(-50%);
     color: gray;
-    opacity: 0.6;
 }
 
-#firstname-count {
-   
-    color: gray;
-    opacity: 0.6;
-}
-
-#course-count {
-    
-    color: gray;
-    opacity: 0.6;
-}
-
-#level-count {
-    
-    color: gray;
-    opacity: 0.6;
-}
-@media (max-width: 1000px) {
-    
-    #idno-count,
-    #lastname-count,
-    #firstname-count,
-    #course-count,
-    #level-count {
-        display: none;
-    }
-}
 
 @media (max-width: 934px) {
     .custom-modal-content {
