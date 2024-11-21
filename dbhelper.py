@@ -38,13 +38,26 @@ def getone_record(table: str, **kwargs) -> bool:
     print(f"getone_record result: {result}")  # Debugging line
     return result
 
-def add_record(table:str, **kwargs) -> bool:
-	keys:list = list(kwargs.keys())
-	values:list = list(kwargs.values())
-	fields:str = "`, `".join(keys)
-	data:str = "','".join(values) 
-	sql:str = f"INSERT INTO `{table}` (`{fields}`) VALUES('{data}')"
-	return postprocess(sql)
+def add_record(table, **kwargs):
+    db = connect('studentinfo.db')
+    cursor = db.cursor()
+    
+    keys = ', '.join(kwargs.keys())
+    values = ', '.join('?' for _ in kwargs.values())
+    
+    sql = f'INSERT INTO {table} ({keys}) VALUES ({values})'
+    
+    try:
+        cursor.execute(sql, tuple(kwargs.values()))
+        db.commit()
+        return True
+    except Exception as e:
+        print(f"Error adding record: {e}")
+        return False
+    finally:
+        cursor.close()
+        db.close()
+
 
 def update_record(table:str, **kwargs) -> bool:
 	keys:list = list(kwargs.keys())

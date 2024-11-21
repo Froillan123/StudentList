@@ -572,7 +572,7 @@ p.fields
     color: rgba(128, 128, 128, 0.6);
 }
 
-#lastname-count, #firstname-count, #course-count, #level-count {
+.char-count{
     position: absolute;
     right: 10px;
     top: 54%;

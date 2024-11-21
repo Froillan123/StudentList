@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash,jsonify
 from dbhelper import *
 import os
 import base64
@@ -77,6 +77,16 @@ def substringer(s, phrase):
     i = s.find(phrase)
     return s[i + len(phrase):] if i != -1 else ''
 
+
+@app.route('/check_student_exists')
+def check_student_exists():
+    idno = request.args.get('idno')
+    existing_user = get_user(idno=idno)
+    if existing_user:
+        return jsonify({"exists": True})
+    else:
+        return jsonify({"exists": False})
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -85,10 +95,10 @@ def register():
         firstname = request.form['firstname']
         course = request.form['course']
         level = request.form['level']
-        flag = request.form.get('flag', '0') 
+        flag = request.form.get('flag', '0')
         image_data = request.form.get('image_data')
         imagename = ''
-        
+
         if not idno.isdigit():
             flash("ID Number must contain only digits!", 'error')
             return redirect(url_for('student_list'))
@@ -101,24 +111,26 @@ def register():
             except Exception as e:
                 flash(f"Error saving image: {str(e)}", 'error')
                 return redirect(url_for('student_list'))
-        
         if flag == '0':
+            existing_user = get_user(idno=idno)
+            if existing_user:
+                flash(f"Student {idno} already exists!", 'warning')
+                return redirect(url_for('student_list'))  
             ok = False
             if imagename:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
             else:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
-
+            
             msg = "Student Registered Successfully!" if ok else "Error Registering User!"
             flash(msg, 'success' if ok else 'error')
-
         else:
             existing_user = getone_record('students', idno=idno)
             
             if existing_user:
                 old_image = existing_user[0]['image']
                 if not imagename:
-                    imagename = old_image
+                    imagename = old_image 
                 else:
                     if old_image != imagename and os.path.exists(old_image):
                         try:
@@ -127,7 +139,6 @@ def register():
                             flash(f"Error removing old image: {str(e)}", 'error')
                             return redirect(url_for('student_list'))
                 ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
-
                 msg = "Student Updated Successfully!" if ok else "Error Updating Student!"
                 flash(msg, 'success' if ok else 'error')
             else:
@@ -137,6 +148,8 @@ def register():
         flash(f"Error: {str(e)}", 'error')
 
     return redirect(url_for('student_list'))
+
+
 
 @app.route('/delete_user', methods=['POST'])
 def delete_user():

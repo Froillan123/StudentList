@@ -71,7 +71,7 @@ let menuIcon = document.querySelector('#menu-icon');
     }
 
 
-        function editRecord() {
+    function editRecord() {
             const idno = document.getElementById('idno-view') ? document.getElementById('idno-view').value : '';
             const lastname = document.getElementById('lastname-view') ? document.getElementById('lastname-view').value : '';
             const firstname = document.getElementById('firstname-view') ? document.getElementById('firstname-view').value : '';
@@ -123,9 +123,6 @@ let menuIcon = document.querySelector('#menu-icon');
             document.getElementById('level-count').textContent = '0/5';
         }
 
-
-
-
     function closeModal() {
         document.getElementById('idno').readOnly = false; 
         document.getElementById('idno').value = '';
@@ -168,26 +165,47 @@ let menuIcon = document.querySelector('#menu-icon');
         }
     }
 
-function checkIfFieldsExists() {
-const idno = document.getElementById('idno').value.trim();
-const lastname = document.getElementById('lastname').value.trim();
-const firstname = document.getElementById('firstname').value.trim();
-const course = document.getElementById('course').value.trim();
-const level = document.getElementById('level').value.trim();
-const image_data = document.getElementById('image_data').value.trim();
-
-if (!idno || !lastname || !firstname || !course || !level) {
-    alert("Please fill in all fields.");
-    return false;
-}
-
-if (!image_data) {
-    alert("Please capture an image.");
-    return false;
-}
-
-return true;
-}
+    function checkIfFieldsExists(event) {
+        event.preventDefault();
+    
+        const idno = document.getElementById('idno').value.trim();
+        const lastname = document.getElementById('lastname').value.trim();
+        const firstname = document.getElementById('firstname').value.trim();
+        const course = document.getElementById('course').value.trim();
+        const level = document.getElementById('level').value.trim();
+        const image_data = document.getElementById('image_data').value.trim();
+        const flag = document.getElementById('flag').value.trim();
+    
+        if (!idno || !lastname || !firstname || !course || !level) {
+            alert("Please fill in all fields.");
+            return false;
+        }
+    
+        if (!image_data) {
+            alert("Please capture an image.");
+            return false;
+        }
+        if (flag === '0') {
+            fetch(`/check_student_exists?idno=${idno}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        alert(`Student with ID No. ${idno} already exists.`);
+                        document.getElementById('idno').value = '';  
+                        return false; 
+                    } else {
+                        document.getElementById('reg').submit();  
+                    }
+                })
+                .catch(error => {
+                    alert("Error checking student existence. Please try again.");
+                    return false;
+                });
+        } else {
+            document.getElementById('reg').submit();
+        }
+    }
+    
 
 function openAddStudentModal() {
 document.getElementById('addStudentModal').style.display = 'flex';
