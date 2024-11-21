@@ -454,8 +454,7 @@ html::-webkit-scrollbar-thumb
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 35%;  
-    max-width: 650px;
+    width: 45%;  
     max-height: 90vh;
     overflow-y: auto; 
     position: relative;
@@ -515,7 +514,7 @@ html::-webkit-scrollbar-thumb
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 35%;  
+    width: 45%;  
     max-width: 650px;
     max-height: 90vh;
     overflow-y: auto; 
@@ -553,6 +552,8 @@ input[readonly] {
     display: none; 
 }
 
+
+
 .w3-table-all th {
     background-color: #2196F3; 
     color: #ffffff; 
@@ -562,23 +563,23 @@ p.fields
 {
     position: relative;
 }
-#idno-count 
-{
+
+#idno-count {
     position: absolute;
     right: 10px;
     top: 70%;
     transform: translateY(-50%);
-    color: gray;
+    color: rgba(128, 128, 128, 0.6);
 }
 
-#lastname-count, #firstname-count , #course-count, #level-count 
-{
+#lastname-count, #firstname-count, #course-count, #level-count {
     position: absolute;
     right: 10px;
     top: 54%;
     transform: translateY(-50%);
-    color: gray;
+    color: rgba(128, 128, 128, 0.6);
 }
+
 
 
 @media (max-width: 934px) {

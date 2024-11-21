@@ -29,11 +29,14 @@ def getall_records(table:str) -> list:
 	sql:str = f'SELECT * FROM `{table}`'
 	return getprocess(sql)
 
-def getone_record(table:str, **kwargs) -> bool:
-	keys:list = list(kwargs.keys())
-	values:list = list(kwargs.values())
-	sql:str = f"SELECT * FROM `{table}` WHERE `{keys[0]}` = '{values[0]}'"
-	return getprocess(sql)
+def getone_record(table: str, **kwargs) -> bool:
+    keys = list(kwargs.keys())
+    values = list(kwargs.values())
+    sql = f"SELECT * FROM `{table}` WHERE `{keys[0]}` = '{values[0]}'"
+    print(f"Executing query: {sql}")  # Debugging line
+    result = getprocess(sql)
+    print(f"getone_record result: {result}")  # Debugging line
+    return result
 
 def add_record(table:str, **kwargs) -> bool:
 	keys:list = list(kwargs.keys())

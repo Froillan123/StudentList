@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from dbhelper import *
-from flask_session import Session
 import os
+import base64
 
 app = Flask(__name__)
 
@@ -45,7 +45,6 @@ def login():
 def student_list():
     if 'username' in session:
         pagetitle = "Student List"
-        print(f"User logged in: {session['username']}")
         return render_template('index.html', data=getall_records('students'), pagetitle=pagetitle, users=get_users())
     else:
         flash("Please log in first!", "warning")
@@ -72,87 +71,77 @@ def get_users() -> object:
 def get_user(idno:str) -> object:
 	return getone_record('students', idno=idno)
 
+
+
 def substringer(s, phrase):
     i = s.find(phrase)
     return s[i + len(phrase):] if i != -1 else ''
 
 @app.route('/register', methods=['POST'])
 def register():
-    idno = request.form['idno']
-    lastname = request.form['lastname']
-    firstname = request.form['firstname']
-    course = request.form['course']
-    level = request.form['level']
-    flag = request.form['flag']
-    file = request.files['uploadimage']
-
-    if not idno.isdigit():
-        flash("ID Number must contain only digits!", 'error')
-        return redirect(url_for('student_list'))
-
-    existing_user = getone_record('students', idno=idno)
-
-    if existing_user and flag == '0':  
-        flash(f"Student Idno '{idno}' already exists!", 'warning')
-        return redirect(url_for('student_list')) 
-
-    imagename = ''
-    if file and file.filename != '':
-        filename, extension = os.path.splitext(file.filename)
-        imagename = os.path.join(uploadfolder, f'{filename}_{idno}{extension}')
-        file.save(imagename)
-
     try:
-        ok = False
-        if flag == '0': 
+        idno = request.form['idno']
+        lastname = request.form['lastname']
+        firstname = request.form['firstname']
+        course = request.form['course']
+        level = request.form['level']
+        flag = request.form.get('flag', '0') 
+        image_data = request.form.get('image_data')
+        imagename = ''
+        
+        if not idno.isdigit():
+            flash("ID Number must contain only digits!", 'error')
+            return redirect(url_for('student_list'))
+        if image_data:
+            filename = f'{idno}.png'
+            imagename = os.path.join(uploadfolder, filename)
+            try:
+                with open(imagename, "wb") as fh:
+                    fh.write(base64.b64decode(image_data.split(',')[1]))
+            except Exception as e:
+                flash(f"Error saving image: {str(e)}", 'error')
+                return redirect(url_for('student_list'))
+        
+        if flag == '0':
+            ok = False
             if imagename:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
             else:
                 ok = add_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
 
             msg = "Student Registered Successfully!" if ok else "Error Registering User!"
-            flash(msg, 'success' if ok else 'error')  
+            flash(msg, 'success' if ok else 'error')
 
-        else:  
-            existing_student = getone_record('students', idno=idno)
-
-            if not existing_student:
-                flash("Student not found.", 'error')
-                return redirect(url_for('student_list'))
-
-            old_image = existing_student[0]['image']
-
-            if (existing_student[0]['lastname'] == lastname and
-                existing_student[0]['firstname'] == firstname and
-                existing_student[0]['course'] == course and
-                existing_student[0]['level'] == level and
-                (not imagename or old_image == imagename)):
-                flash("No changes were made.", 'info')
-            else:
-                if imagename and old_image != imagename:
-                    if os.path.exists(old_image):
-                        os.remove(old_image)  
-
-                if imagename: 
-                    ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
-                else: 
-                    ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level)
+        else:
+            existing_user = getone_record('students', idno=idno)
+            
+            if existing_user:
+                old_image = existing_user[0]['image']
+                if not imagename:
+                    imagename = old_image
+                else:
+                    if old_image != imagename and os.path.exists(old_image):
+                        try:
+                            os.remove(old_image)
+                        except Exception as e:
+                            flash(f"Error removing old image: {str(e)}", 'error')
+                            return redirect(url_for('student_list'))
+                ok = update_record('students', idno=idno, lastname=lastname, firstname=firstname, course=course, level=level, image=imagename)
 
                 msg = "Student Updated Successfully!" if ok else "Error Updating Student!"
                 flash(msg, 'success' if ok else 'error')
+            else:
+                flash("Student not found, unable to update.", 'error')
 
     except Exception as e:
         flash(f"Error: {str(e)}", 'error')
 
     return redirect(url_for('student_list'))
 
-
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
     idno: str = request.form['idno']
-    print(f"Deleting user with ID: {idno}") 
     imagename: str = get_user(idno)[0]['image']
-    print(f"Image path: {imagename}") 
     ok: bool = delete_record('students', idno=idno)
     
     if ok:
@@ -165,10 +154,8 @@ def delete_user():
     try:
         if os.path.exists(imagename):
             os.remove(imagename)
-            print(f"Deleted image: {imagename}")
     except Exception as e:
         flash(f"Error within '/delete_user': File path error", 'error')
-        print(e)
     
     return redirect(url_for('student_list'))
 
