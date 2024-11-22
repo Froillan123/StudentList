@@ -4,33 +4,6 @@
 <div class='w3-container w3-blue w3-margin-bottom'>
     <h3 class="w3-center w3-margin-left">{{pagetitle}}</h3>
 </div>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="w3-container flash-message 
-        {% if category == 'success' %} success
-        {% elif category == 'error' %} error
-        {% elif category == 'info' %} info
-        {% elif category == 'delete-success' %} delete-success
-        {% else %} warning {% endif %}">
-          {% if category == 'success' %}
-              <i class="fa fa-check-circle"></i>
-          {% elif category == 'error' %}
-              <i class="fa fa-times-circle"></i>
-          {% elif category == 'warning' %}
-              <i class="fa fa-exclamation-circle"></i>
-          {% elif category == 'delete-success' %}
-              <i class="fa fa-check-circle"></i>
-          {% elif category == 'info' %}
-              <i class="fa fa-info-circle"></i>
-          {% endif %}
-          <p>{{ message }}</p>
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
 <div class="w3-card-4 w3-animate-top w3-container w3-padding card-container">
     <form method="POST" action="{{ url_for('login') }}" id="loginForm">
         <p>
@@ -72,7 +45,7 @@
 
     @media (max-width: 574px) {
         .card-container {
-            width: 100%;
+            width: 90%;
         }
     }
 </style>

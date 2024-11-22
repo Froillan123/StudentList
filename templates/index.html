@@ -13,41 +13,6 @@
         </a>
     </nav>
 </div>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-        <div class="w3-container flash-message 
-        {% if category == 'success' %}
-            success
-        {% elif category == 'error' %}
-            error
-        {% elif category == 'info' %}
-            info
-        {% elif category == 'delete-success' %}
-            delete-success
-        {% else %}
-            warning
-        {% endif %}
-        ">
-            {% if category == 'success' %}
-                <i class="fa fa-check-circle"></i>
-            {% elif category == 'error' %}
-                <i class="fa fa-times-circle"></i>
-            {% elif category == 'warning' %}
-                <i class="fa fa-exclamation-circle"></i>
-            {% elif category == 'delete-success' %}
-                <i class="fa fa-check-circle"></i>
-            {% elif category == 'info' %}
-                <i class="fa fa-info-circle"></i>
-            {% endif %}
-            <p>{{ message }}</p>
-        </div>
-        
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
 <div class="w3-row-padding" id="main_container">
     <div class="w3-full">
         <table class="w3-table-all styled-table" id="table">
@@ -98,48 +63,49 @@
             </p>
             <p class="fields">
                 <label><b>IDNO</b></label>
-                <input type="text" id="idno" name="idno" class="w3-input" maxlength="10" oninput="updateCount(this, 'idno-count', 10)">
+                <input type="text" id="idno" name="idno" class="w3-input" maxlength="10" oninput="updateCount(this, 'idno-count', 10)" required>
                 <span id="idno-count" class="char-count">0/10</span>
             </p>
             <p class="fields">
                 <label><b>LASTNAME</b></label>
                 <div style="position: relative;">
-                    <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="50" oninput="updateCount(this, 'lastname-count', 50)">
+                    <input type="text" id="lastname" name="lastname" class="w3-input" maxlength="50" oninput="updateCount(this, 'lastname-count', 50)" required>
                     <span id="lastname-count" class="char-count">0/50</span>
                 </div>
             </p>
             <p class="fields">
                 <label><b>FIRSTNAME</b></label>
                 <div style="position: relative;">
-                    <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="50" oninput="updateCount(this, 'firstname-count', 50)">
+                    <input type="text" id="firstname" name="firstname" class="w3-input" maxlength="50" oninput="updateCount(this, 'firstname-count', 50)" required>
                     <span id="firstname-count" class="char-count">0/50</span>
                 </div>
             </p>
             <p class="fields">
                 <label><b>COURSE</b></label>
                 <div style="position: relative;">
-                    <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)">
+                    <input type="text" id="course" name="course" class="w3-input" maxlength="15" oninput="updateCount(this, 'course-count', 15)" required>
                     <span id="course-count" class="char-count">0/15</span>
                 </div>
             </p>
             <p class="fields">
                 <label><b>LEVEL</b></label>
                 <div style="position: relative;">
-                    <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)">
+                    <input type="text" id="level" name="level" class="w3-input" maxlength="5" oninput="updateCount(this, 'level-count', 5)" required>
                     <span id="level-count" class="char-count">0/5</span>
                 </div>
             </p>
-                <input type="hidden" name="image_data" id="image_data">
-                <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top" onclick="take_snapshot()">
-                <button id="cancel-edit-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_edit()">CANCEL</button>
+            <input type="file" name="image_data" id="image_data" style="display: none;">
+            <input type="submit" value="SAVE" class="w3-button w3-blue w3-margin-top">
+            <button id="cancel-edit-btn" type="reset" class="w3-button w3-amber w3-margin-top" onclick="cancel_edit()">CANCEL</button>
         </form>
     </div>
 </div>
 
+
 <div id="viewModal" class="view-modal" style="display: none;">
     <div class="view-modal-content w3-card-4">
         <p class="w3-center w3-padding">
-                <img id="image-view" class="image">
+            <img id="image-view" class="image">
         </p>
         <form method="post" action="/register" enctype="multipart/form-data">
             <input type="hidden" name="flag" id="flag" value="0"> <!-- Adjust value as needed -->
@@ -193,8 +159,11 @@
     Webcam.set({
     width: 300,
     height: 250,
-    image_format: 'jpeg',
-    jpeg_quality: 90
+    image_format: 'png',
+    fps: 60,
+    force_flash: false,
+    flip_horiz: true,
+    png_quality: 90
     });
     
     Webcam.attach('#my_camera');

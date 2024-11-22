@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash,jsonify
 from dbhelper import *
 import os
-import base64
 
 app = Flask(__name__)
 
@@ -11,16 +10,6 @@ app.config["SESSION_FILE_DIR"] = "/tmp/sessions"
 app.config["SESSION_COOKIE_NAME"] = "session_cookie" 
 app.config['SECRET_KEY'] = 'Kimperor123'
 
-def userlogin(username: str, password: str) -> bool:
-    sql = "SELECT * FROM users WHERE username = ? AND password = ?"
-    db = connect('studentinfo.db')
-    cursor = db.cursor()
-    cursor.row_factory = Row
-    cursor.execute(sql, (username, password))
-    data = cursor.fetchall()
-    cursor.close()
-    db.close()
-    return len(data) > 0
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -71,8 +60,6 @@ def get_users() -> object:
 def get_user(idno:str) -> object:
 	return getone_record('students', idno=idno)
 
-
-
 def substringer(s, phrase):
     i = s.find(phrase)
     return s[i + len(phrase):] if i != -1 else ''
@@ -96,21 +83,22 @@ def register():
         course = request.form['course']
         level = request.form['level']
         flag = request.form.get('flag', '0')
-        image_data = request.form.get('image_data')
+        image_file = request.files.get('image_data')  
         imagename = ''
 
         if not idno.isdigit():
             flash("ID Number must contain only digits!", 'error')
             return redirect(url_for('student_list'))
-        if image_data:
-            filename = f'{idno}.png'
+        
+        if image_file:
+            filename = f'{idno}.png' 
             imagename = os.path.join(uploadfolder, filename)
             try:
-                with open(imagename, "wb") as fh:
-                    fh.write(base64.b64decode(image_data.split(',')[1]))
+                image_file.save(imagename)
             except Exception as e:
                 flash(f"Error saving image: {str(e)}", 'error')
                 return redirect(url_for('student_list'))
+        
         if flag == '0':
             existing_user = get_user(idno=idno)
             if existing_user:

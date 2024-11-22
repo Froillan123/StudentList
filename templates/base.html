@@ -12,6 +12,32 @@
 	</head>
 	<body>
 		
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="w3-container flash-message 
+        {% if category == 'success' %} success
+        {% elif category == 'error' %} error
+        {% elif category == 'info' %} info
+        {% elif category == 'delete-success' %} delete-success
+        {% else %} warning {% endif %}">
+          {% if category == 'success' %}
+              <i class="fa fa-check-circle"></i>
+          {% elif category == 'error' %}
+              <i class="fa fa-times-circle"></i>
+          {% elif category == 'warning' %}
+              <i class="fa fa-exclamation-circle"></i>
+          {% elif category == 'delete-success' %}
+              <i class="fa fa-check-circle"></i>
+          {% elif category == 'info' %}
+              <i class="fa fa-info-circle"></i>
+          {% endif %}
+          <p>{{ message }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+		
 	    <div>
 	        {% block content %}
 					

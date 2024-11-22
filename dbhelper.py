@@ -33,9 +33,7 @@ def getone_record(table: str, **kwargs) -> bool:
     keys = list(kwargs.keys())
     values = list(kwargs.values())
     sql = f"SELECT * FROM `{table}` WHERE `{keys[0]}` = '{values[0]}'"
-    print(f"Executing query: {sql}")  # Debugging line
     result = getprocess(sql)
-    print(f"getone_record result: {result}")  # Debugging line
     return result
 
 def add_record(table, **kwargs):
@@ -75,3 +73,13 @@ def delete_record(table:str, **kwargs) -> list:
 	sql:str = f"DELETE FROM `{table}` WHERE `{keys[0]}` = '{values[0]}'"
 	return postprocess(sql)
 
+def userlogin(username: str, password: str) -> bool:
+    sql = "SELECT * FROM users WHERE username = ? AND password = ?"
+    db = connect('studentinfo.db')
+    cursor = db.cursor()
+    cursor.row_factory = Row
+    cursor.execute(sql, (username, password))
+    data = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return len(data) > 0
