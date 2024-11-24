@@ -243,7 +243,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 
 html::-webkit-scrollbar
 {
-  width: 1.2em;
+  width: 12px;
   height: 1em;
 }
 

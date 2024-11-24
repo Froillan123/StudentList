@@ -211,34 +211,34 @@ let menuIcon = document.querySelector('#menu-icon');
     }
 
 
-function openAddStudentModal() {
-document.getElementById('addStudentModal').style.display = 'flex';
-}
-
-window.onclick = function(event) {
-if (event.target == document.getElementById('addStudentModal')) {
-    document.getElementById('addStudentModal').style.display = 'none';
-}
-}
-
-
-document.addEventListener('click', function(event) {
-    const addStudentModal = document.getElementById('addStudentModal');
-    const addStudentContent = document.querySelector('#addStudentModal .custom-modal-content');
-
-    const viewModal = document.getElementById('viewModal');
-    const viewContent = document.querySelector('#viewModal .view-modal-content');
-
-    const customAlert = document.getElementById('customAlert');
-    const alertContent = document.querySelector('#customAlert .alert-content');
-    if (addStudentModal.style.display === 'flex' && !addStudentContent.contains(event.target)) {
-        event.stopPropagation(); 
+    function openAddStudentModal() {
+    document.getElementById('addStudentModal').style.display = 'flex';
     }
-    if (viewModal.style.display === 'flex' && !viewContent.contains(event.target)) {
-        event.stopPropagation(); 
+
+    window.onclick = function(event) {
+    if (event.target == document.getElementById('addStudentModal')) {
+        document.getElementById('addStudentModal').style.display = 'none';
     }
-    if (customAlert.style.display === 'flex' && !alertContent.contains(event.target)) {
-        event.stopPropagation(); 
     }
-});
+
+
+    document.addEventListener('click', function(event) {
+        const addStudentModal = document.getElementById('addStudentModal');
+        const addStudentContent = document.querySelector('#addStudentModal .custom-modal-content');
+
+        const viewModal = document.getElementById('viewModal');
+        const viewContent = document.querySelector('#viewModal .view-modal-content');
+
+        const customAlert = document.getElementById('customAlert');
+        const alertContent = document.querySelector('#customAlert .alert-content');
+        if (addStudentModal.style.display === 'flex' && !addStudentContent.contains(event.target)) {
+            event.stopPropagation(); 
+        }
+        if (viewModal.style.display === 'flex' && !viewContent.contains(event.target)) {
+            event.stopPropagation(); 
+        }
+        if (customAlert.style.display === 'flex' && !alertContent.contains(event.target)) {
+            event.stopPropagation(); 
+        }
+    });
 

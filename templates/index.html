@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+
 <div class='w3-container w3-blue w3-margin-bottom header'>
     <h3 class="w3-left w3-margin-left w3-margin-top">{{ pagetitle }}</h3>
     <i class="fa fa-bars w3-right w3-margin-top w3-margin-bottom" id="menu-icon"></i> 
@@ -108,7 +110,7 @@
             <img id="image-view" class="image">
         </p>
         <form method="post" action="/register" enctype="multipart/form-data">
-            <input type="hidden" name="flag" id="flag" value="0"> <!-- Adjust value as needed -->
+            <input type="hidden" name="flag" id="flag" value="0"> 
             <input type="hidden" id="idno" name="idno">
             <p>
                 <label><b>IDNO</b></label>
@@ -137,8 +139,6 @@
 </div>
 
 
-
-
     <div id="customAlert" style="display: none;">
         <div class="alert-content">
             <h3>Are you sure you want to delete this student?</h3>
@@ -155,7 +155,6 @@
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 <script src="{{ url_for('static', filename='js/webcam.min.js') }}"></script>
 <script>
-    const default_img_src = "{{ url_for('static', filename='img/personicon.png') }}";
     Webcam.set({
     width: 300,
     height: 250,

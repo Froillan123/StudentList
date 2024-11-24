@@ -1,5 +1,6 @@
 #dbhelper.py
 from sqlite3 import connect, Row
+import os
 
 database:str = 'studentinfo.db'
 

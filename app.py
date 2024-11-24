@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash,jsonify
 from dbhelper import *
-import os
 
 app = Flask(__name__)
 
@@ -9,6 +8,19 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = "/tmp/sessions" 
 app.config["SESSION_COOKIE_NAME"] = "session_cookie" 
 app.config['SECRET_KEY'] = 'Kimperor123'
+uploadfolder = 'static/img/'
+app.config['UPLOAD_FOLDER'] = uploadfolder
+
+
+def get_users() -> object:
+	return getall_records('students')
+
+def get_user(idno:str) -> object:
+	return getone_record('students', idno=idno)
+
+def substringer(s, phrase):
+    i = s.find(phrase)
+    return s[i + len(phrase):] if i != -1 else ''
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -48,22 +60,6 @@ def logout():
 @app.route('/')
 def index():
     return redirect(url_for('login'))
-
-
-uploadfolder = 'static/img/'
-app.config['SECRET_KEY'] = '!@#$%^'
-app.config['UPLOAD_FOLDER'] = uploadfolder
-
-def get_users() -> object:
-	return getall_records('students')
-
-def get_user(idno:str) -> object:
-	return getone_record('students', idno=idno)
-
-def substringer(s, phrase):
-    i = s.find(phrase)
-    return s[i + len(phrase):] if i != -1 else ''
-
 
 @app.route('/check_student_exists')
 def check_student_exists():
